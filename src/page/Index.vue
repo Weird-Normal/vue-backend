@@ -5,9 +5,15 @@
         <Header></Header>
       </el-header>
 
-      <el-row>
+      <el-header>
+        <Menu></Menu>
+      </el-header>
+
+      <router-view></router-view>
+
+      <!-- <el-row>
         <Main></Main>
-      </el-row>
+      </el-row> -->
 
       <Footer></Footer>
     </el-container>
@@ -16,8 +22,9 @@
 
 <script>
 import Header from '@/components/public/Header'
-import Main from '@/components/public/Main'
+// import Main from '@/components/public/Main'
 import Footer from '@/components/public/Footer'
+import Menu from '@/components/public/Menu'
 
 export default {
   name: 'Index',
@@ -28,7 +35,8 @@ export default {
   components: {
     Header,
     // Aside,
-    Main,
+    // Main,
+    Menu,
     Footer
   }
 }

@@ -5,6 +5,7 @@ import Index from '@/page/Index'
 import Page1 from '@/page/Page1'
 import Page2 from '@/page/Page2'
 import Page3 from '@/page/Page3'
+import Table from '@/page/Page1/table'
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +19,14 @@ export default new Router({
         {
           path: '/page1',
           name: 'Page1',
-          component: Page1
+          component: Page1,
+          children: [
+            {
+              path: '/page1/table',
+              name: 'Table',
+              component: Table
+            }
+          ]
         },
         {
           path: '/page2',

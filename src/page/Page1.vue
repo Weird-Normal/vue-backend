@@ -1,15 +1,12 @@
 <template>
   <div>
     <el-container>
-
-    <el-aside width="200px">
-      <Aside1></Aside1>
-    </el-aside>
-    <el-container>
+      <el-aside width="200px">
+        <Aside1></Aside1>
+      </el-aside>
       <el-main>
-        Page
+        <router-view></router-view>
       </el-main>
-    </el-container>
     </el-container>
   </div>
 </template>
