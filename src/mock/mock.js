@@ -6,7 +6,7 @@ const Rondom = Mock.Random
 Mock.mock(/getUser/, {
   'userInfo|50': [{
     'id|+1': 1,
-    'username': () => Rondom.cname(),
+    'username': () => Rondom.name(),
     'email': () => Rondom.email(),
     'age|1-100': 18
   }]

@@ -11,6 +11,8 @@ import Axios from 'axios'
 Vue.use(ElementUI)
 
 Vue.prototype.$axios = Axios
+// Axios.defaults.baseURL = 'https://localhost:8080'
+Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 Vue.config.productionTip = false
 
