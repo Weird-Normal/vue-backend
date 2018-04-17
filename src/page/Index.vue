@@ -43,6 +43,9 @@ export default {
 </script>
 
 <style scoped>
+.el-header {
+  padding: 0px;
+}
 .el-header, .el-footer {
   background-color: #B3C0D1;
   color: #333;

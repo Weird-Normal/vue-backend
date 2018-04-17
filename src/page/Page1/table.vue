@@ -42,11 +42,11 @@
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="age" label="年龄"></el-table-column>
-        <el-table-column inline-template label="操作">
-          <span>
-            <el-button type="danger" size="small" @click="deleteUser(row)">删除</el-button>
-            <el-button type="success" size="small" @click="setCurrent(row)">编辑</el-button>
-          </span>
+        <el-table-column fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
+            <el-button type="success" size="small" @click="setCurrent(scope.row)">编辑</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
@@ -58,13 +58,14 @@
           :page-sizes="[10, 20, 50, 70]"
           :page-size="page.psize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="page.total">
+          :total="userData.length">
         </el-pagination>
       </div>
     </el-row>
 
     <!-- 创建用户 modal -->
-    <el-dialog title="创建用户" v-model="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="reset">
+    <!-- <el-dialog title="创建用户" v-model="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="reset"> -->
+    <el-dialog title="创建用户" :visible.sync="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="reset">
       <el-form id="#create" :model="create" :rules="rules" ref="create" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="create.username"></el-input>
@@ -83,7 +84,7 @@
     </el-dialog>
 
     <!-- 修改用户 modal -->
-    <el-dialog title="修改用户信息" v-model="dialogUpdateVisible" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="修改用户信息" :visible.sync="dialogUpdateVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form id="#update" :model="update" :rules="updateRules" ref="update" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="update.username"></el-input>
@@ -104,7 +105,7 @@
 </template>
 
 <script>
-// import api from '@/api/api.js'
+import api from '@/api/api.js'
 
 var placeholders = {
   'username': '请输入查找用户名',
@@ -119,7 +120,7 @@ export default {
       page: {
         psize: 10, // 每页的条数
         cpage: 1, // 当前页
-        totoal: 0,
+        total: 0,
         username: '',
         age: '',
         email: '',
@@ -191,8 +192,11 @@ export default {
       placeholder: placeholders['username']
     }
   },
-  created () {
-    this.setUserData()
+  // created () {
+  //   this.getUsersData()
+  // },
+  mounted: function () {
+    this.getUsersData()
   },
   methods: {
     tableSelectionChange (val) {
@@ -209,12 +213,140 @@ export default {
       } else {
         this.page.sorts = ''
       }
+      this.getUsersData()
     },
-    setUserData: function () {
+    // 每页显示的条数
+    handleSizeChange (val) {
+      console.log(`每页${val}条`)
+      this.page.psize = val
+      this.getUsersData()
+    },
+    // 当前页选择
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.page.cpage = val
+      this.getUsersData()
+    },
+    // 搜索字段的变更
+    searchFieldChange (val) {
+      this.placeholder = placeholders[val]
+      console.log(`搜索字段：${val}`)
+    },
+    // 单行点击
+    rowClick (row, event) {
+      // var index = $.inArray(row, this.selected)
+      // if (index < 0) {
+      //   this.selected.push(row)
+      //   this.$refs.usersTable.toggleRowSelection(row, true)
+      // } else {
+      //   this.selected.splice(index, 1)
+      //   this.$refs.usersTable.toggleRowSelection(row, false)
+      // }
+    },
+    // 重置表单
+    rest () {
+      // this.$.refs.create.resetFields()
+    },
+    setCurrent (user) {
+      this.currentId = user.id
+      this.update.username = user.username
+      this.update.email = user.email
+      this.update.age = user.age
+      this.dialogUpdateVisible = true
+    },
+    getUsersData: function () {
       this.$axios.get('/getUser').then(res => {
         // console.log(res.data)
         this.userData = res.data.userInfo
         // console.log(this.userData)
+        this.page.total = res.data.total
+        this.loading = false
+        console.log(res)
+      }, err => {
+        console.log(err)
+      })
+    },
+    // 创建用户
+    createUser () {
+      this.$refs.create.validate((valid) => {
+        if (valid) {
+          // this.create.id = getuuid()
+          this.create.id = ''
+          this.createLoading = true
+          api._post(this.create).then(res => {
+            this.$message.success('创建用户成功！')
+            this.dialogCreateVisible = false
+            this.createLoading = false
+            this.reset()
+            this.getUsersData()
+          }).catch((res) => {
+            var data = res
+            if (data instanceof Array) {
+              this.$message.error(data[0]['message'])
+            } else if (data instanceof Object) {
+              this.$message.error(data['message'])
+            }
+            this.createLoading = false
+          })
+        } else {
+          // this.$message.error('存在输入校验错误!')
+          return false
+        }
+      })
+    },
+    // 更新用户资料
+    updateUser () {
+      this.$refs.update.validate((valid) => {
+        if (valid) {
+          this.updateLoading = true
+          api._update(this.currentId, this.update).then(res => {
+            this.$message.success('修改用户资料成功！')
+            this.dialogUpdateVisible = false
+            this.updateLoading = false
+            this.getUsersData()
+          }).catch(res => {
+            var data = res
+            if (data instanceof Array) {
+              this.$message.error(data[0]['message'])
+            } else if (data instanceof Object) {
+              this.$message.error(data['message'])
+            }
+            this.updateLoading = false
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    // 删除单个用户
+    deleteUser (user) {
+      this.$confirm('此操作将永久删除用户 ' + user.username + ', 是否继续?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        api._remove(user).then(res => {
+          this.$message.success('成功删除了用户' + user.username + '!')
+          this.getUsers()
+          console.log(user.id)
+        }).catch(res => {
+          this.$message.error('删除失败!')
+        })
+      }).catch(() => {
+        this.$message.info('已取消操作!')
+      })
+    },
+    // 删除多个用户
+    deleteUsers () {
+      this.$confirm('此操作将永久删除 ' + this.selected.length + ' 个用户, 是否继续?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        api._removes().then(res => {
+          this.$message.success('删除了' + this.selected.length + '个用户!')
+          this.getUsers()
+        }).catch(res => {
+          this.$message.error('删除失败!')
+        })
+      }).catch(() => {
+        this.$message('已取消操作!')
       })
     }
   }
