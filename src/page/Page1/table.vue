@@ -255,16 +255,27 @@ export default {
       this.dialogUpdateVisible = true
     },
     getUsersData: function () {
+      this.loading = true
       this.$axios.get('/getUser').then(res => {
-        // console.log(res.data)
-        this.userData = res.data.userInfo
-        // console.log(this.userData)
+        // this.userData = res.data.userInfo
+        // this.page.total = res.data.total
+        this.userData = res.data
         this.page.total = res.data.total
         this.loading = false
         console.log(res)
       }, err => {
         console.log(err)
       })
+
+      // 调用封装的api
+      // this.loading = true
+      // api._get().then(res => {
+      //   this.userData = res.userInfo
+      //   this.page.total = res.total
+      //   this.loading = false
+      // }, err => {
+      //   console.log(err)
+      // })
     },
     // 创建用户
     createUser () {
@@ -320,16 +331,25 @@ export default {
     },
     // 删除单个用户
     deleteUser (user) {
+      console.log('--------------' + user.id)
       this.$confirm('此操作将永久删除用户 ' + user.username + ', 是否继续?', '提示', {
         type: 'warning'
       }).then(() => {
-        api._remove(user).then(res => {
+        this.$axios.post('/deleteUser', { id: user.id }).then(res => {
           this.$message.success('成功删除了用户' + user.username + '!')
-          this.getUsers()
-          console.log(user.id)
-        }).catch(res => {
-          this.$message.error('删除失败!')
+          this.getUsersData()
+        }, err => {
+          console.log(err)
         })
+
+        // 调用
+        // api._remove(user).then(res => {
+        //   this.$message.success('成功删除了用户' + user.username + '!')
+        //   this.getUsers()
+        //   console.log(user.id)
+        // }).catch(res => {
+        //   this.$message.error('删除失败!')
+        // })
       }).catch(() => {
         this.$message.info('已取消操作!')
       })

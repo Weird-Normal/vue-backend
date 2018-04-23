@@ -81,7 +81,7 @@ export const myDelete = (url, params) => {
 
 export default {
   _get () {
-    return myGet('/getUser/')
+    return myGet('/getUser')
   },
 
   _post (params) {
@@ -94,7 +94,7 @@ export default {
 
   _delete (user) {
     let userid = user.id
-    return myDelete('' + userid)
+    return myDelete('/deleteUser' + userid)
   },
 
   _deletes () {
