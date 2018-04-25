@@ -64,8 +64,7 @@
     </el-row>
 
     <!-- 创建用户 modal -->
-    <!-- <el-dialog title="创建用户" v-model="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="reset"> -->
-    <el-dialog title="创建用户" :visible.sync="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="reset">
+    <el-dialog title="创建用户" :visible.sync="dialogCreateVisible" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeCreate">
       <el-form id="#create" :model="create" :rules="rules" ref="create" label-width="100px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="create.username"></el-input>
@@ -74,11 +73,12 @@
           <el-input v-model="create.email"></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-          <el-input v-model="create.age"></el-input>
+          <el-input v-model.number="create.age"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogCreateVisible = false">取消</el-button>
+        <!-- <el-button @click="dialogCreateVisible = false">取消</el-button> -->
+        <el-button @click="closeCreate">取消</el-button>
         <el-button type="primary" :loading="createLoading" @click="createUser">确定</el-button>
       </div>
     </el-dialog>
@@ -93,7 +93,7 @@
           <el-input v-model="update.email"></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-          <el-input v-model="update.age"></el-input>
+          <el-input v-model.number="update.age"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import api from '@/api/api.js'
+// import api from '@/api/api.js'
 
 var placeholders = {
   'username': '请输入查找用户名',
@@ -127,18 +127,16 @@ export default {
         sorts: ''
       },
       create: {
-        id: '',
         username: '',
         email: '',
-        age: '',
-        is_active: true
+        age: ''
       },
       currentId: '',
       update: {
-        name: '',
+        username: '',
         email: '',
-        age: '',
-        is_active: true
+        age: ''
+        // is_active: true
       },
       rules: {
         username: [{
@@ -154,10 +152,18 @@ export default {
           message: '用户名只能为字母和数字'
         }],
         email: [{
+          required: true,
+          message: '请输入邮箱',
+          trigger: 'blur'
+        }, {
           type: 'email',
           message: '邮箱格式不正确'
         }],
         age: [{
+          required: true,
+          message: '请输入年龄',
+          trigger: 'blur'
+        }, {
           type: 'number',
           message: '年龄只能为数字'
         }]
@@ -177,8 +183,11 @@ export default {
           message: '邮箱格式不正确'
         }],
         age: [{
+          required: true,
+          message: '年龄不能为空'
+        }, {
           type: 'number',
-          message: '年龄只能为数字'
+          message: '年龄必须为数字值'
         }]
       },
       loading: true,
@@ -233,20 +242,16 @@ export default {
       console.log(`搜索字段：${val}`)
     },
     // 单行点击
-    rowClick (row, event) {
-      // var index = $.inArray(row, this.selected)
-      // if (index < 0) {
-      //   this.selected.push(row)
-      //   this.$refs.usersTable.toggleRowSelection(row, true)
-      // } else {
-      //   this.selected.splice(index, 1)
-      //   this.$refs.usersTable.toggleRowSelection(row, false)
-      // }
-    },
-    // 重置表单
-    rest () {
-      // this.$.refs.create.resetFields()
-    },
+    // rowClick (row, event) {
+    //   // var index = $.inArray(row, this.selected)
+    //   // if (index < 0) {
+    //   //   this.selected.push(row)
+    //   //   this.$refs.usersTable.toggleRowSelection(row, true)
+    //   // } else {
+    //   //   this.selected.splice(index, 1)
+    //   //   this.$refs.usersTable.toggleRowSelection(row, false)
+    //   // }
+    // },
     setCurrent (user) {
       this.currentId = user.id
       this.update.username = user.username
@@ -257,8 +262,6 @@ export default {
     getUsersData: function () {
       this.loading = true
       this.$axios.get('/getUser').then(res => {
-        // this.userData = res.data.userInfo
-        // this.page.total = res.data.total
         this.userData = res.data
         this.page.total = res.data.total
         this.loading = false
@@ -277,18 +280,30 @@ export default {
       //   console.log(err)
       // })
     },
+    // 关闭创建用户表单
+    closeCreate () {
+      this.create.username = ''
+      this.create.email = ''
+      this.create.age = ''
+      this.createLoading = false
+      this.dialogCreateVisible = false
+    },
     // 创建用户
     createUser () {
       this.$refs.create.validate((valid) => {
         if (valid) {
           // this.create.id = getuuid()
-          this.create.id = ''
+          // this.create.id = ''
           this.createLoading = true
-          api._post(this.create).then(res => {
-            this.$message.success('创建用户成功！')
-            this.dialogCreateVisible = false
-            this.createLoading = false
-            this.reset()
+          // api._post(this.create).then(res => {
+          //   this.$message.success('创建用户成功！')
+          //   this.dialogCreateVisible = false
+          //   this.createLoading = false
+          //   this.reset()
+          //   this.getUsersData()
+          this.$axios.post('/createUser', {info: this.create}).then(res => {
+            this.$message.success('创建用户成功!')
+            this.closeCreate()
             this.getUsersData()
           }).catch((res) => {
             var data = res
@@ -310,11 +325,13 @@ export default {
       this.$refs.update.validate((valid) => {
         if (valid) {
           this.updateLoading = true
-          api._update(this.currentId, this.update).then(res => {
-            this.$message.success('修改用户资料成功！')
+          this.$axios.post('/updateUser', {id: this.currentId, info: this.update}).then(res => {
+            this.$message.success('修改成功！')
             this.dialogUpdateVisible = false
             this.updateLoading = false
             this.getUsersData()
+          }, err => {
+            console.log(err)
           }).catch(res => {
             var data = res
             if (data instanceof Array) {
@@ -324,6 +341,20 @@ export default {
             }
             this.updateLoading = false
           })
+          // api._update(this.currentId, this.update).then(res => {
+          //   this.$message.success('修改用户资料成功！')
+          //   this.dialogUpdateVisible = false
+          //   this.updateLoading = false
+          //   this.getUsersData()
+          // }).catch(res => {
+          //   var data = res
+          //   if (data instanceof Array) {
+          //     this.$message.error(data[0]['message'])
+          //   } else if (data instanceof Object) {
+          //     this.$message.error(data['message'])
+          //   }
+          //   this.updateLoading = false
+          // })
         } else {
           return false
         }
@@ -340,6 +371,8 @@ export default {
           this.getUsersData()
         }, err => {
           console.log(err)
+        }).catch(res => {
+          this.$message.error('删除失败！')
         })
 
         // 调用
@@ -356,15 +389,28 @@ export default {
     },
     // 删除多个用户
     deleteUsers () {
+      let ids = []
+      this.selected.map((item) => {
+        ids.push(item.id)
+      })
       this.$confirm('此操作将永久删除 ' + this.selected.length + ' 个用户, 是否继续?', '提示', {
         type: 'warning'
       }).then(() => {
-        api._removes().then(res => {
+        this.$axios.post('/removeUsers', {id: ids}).then(res => {
           this.$message.success('删除了' + this.selected.length + '个用户!')
-          this.getUsers()
+          this.getUsersData()
+        }, err => {
+          console.log(err)
         }).catch(res => {
-          this.$message.error('删除失败!')
+          this.$message.error('删除失败！')
         })
+        // 调用api
+        // api._removes().then(res => {
+        //   this.$message.success('删除了' + this.selected.length + '个用户!')
+        //   this.getUsers()
+        // }).catch(res => {
+        //   this.$message.error('删除失败!')
+        // })
       }).catch(() => {
         this.$message('已取消操作!')
       })

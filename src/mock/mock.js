@@ -3,12 +3,7 @@ import Mock from 'mockjs'
 // 获取Random对象
 const Rondom = Mock.Random
 
-// var data = Mock.mock({
-//   'list|1-10': [{
-//       'id|+1': 1
-//   }]
-// });
-
+// Mock数据
 var res = Mock.mock({
   'userInfo|20': [{
     'id|+1': 1,
@@ -20,39 +15,16 @@ var res = Mock.mock({
 
 var data = res.userInfo
 
-// var data = [
-//   {id: 1, age: 10, username: 'ddd', email: 'dddd@ddd.ev'},
-//   {id: 2, age: 80, username: 'Timothy Moore', email: 'n.xguexqbst@oxurqlod.ev'},
-//   {id: 3, age: 94, username: 'Margaret Robinson', email: 'd.rixbc@pgwpitn.om'},
-//   {id: 4, age: 23, username: 'Robert Wilson', email: 'h.extjegfim@buwzumc.gn'},
-//   {id: 5, age: 28, username: 'Paul Anderson', email: 't.gky@rlcjbzist.tg'},
-//   {id: 6, age: 16, username: 'Barbara Rodriguez', email: 'i.bfrjms@pxxyun.ir'},
-//   {id: 7, age: 94, username: 'John Martinez', email: 'l.sci@krhmwdti.nt'},
-//   {id: 8, age: 91, username: 'Sharon Harris', email: 'q.ybkewhvmcv@vmtjouxh.dk'},
-//   {id: 9, age: 4, username: 'Angela Jones', email: 'c.fuc@wqwfet.pf'},
-//   {id: 10, age: 5, username: 'Steven Martinez', email: 'w.dgwn@mwb.mc'},
-//   {id: 11, age: 56, username: 'Gary Harris', email: 'f.xmrbvpjiw@kucf.ae'},
-//   {id: 12, age: 42, username: 'Deborah Taylor', email: 'x.vpigfe@orbopiyue.pt'},
-//   {id: 13, age: 23, username: 'Sarah Martinez', email: 'n.pmimzgb@fbbhe.by'},
-//   {id: 14, age: 30, username: 'Laura White', email: 'b.kjdg@wouum.sr'},
-//   {id: 15, age: 76, username: 'Mark Gonzalez', email: 'k.wmgoxtu@khxxybgs.br'},
-//   {id: 16, age: 47, username: 'Lisa Lee', email: 'u.dfbuo@ntkygdmvfi.jp'},
-//   {id: 17, age: 80, username: 'Daniel White', email: 'f.vqtqwjhxo@bdtdttgj.mw'},
-//   {id: 18, age: 97, username: 'Susan Johnson', email: 'u.lbho@nsqrykz.biz'},
-//   {id: 19, age: 61, username: 'Frank White', email: 'i.rjptevhduk@nciwekoiy.ar'},
-//   {id: 20, age: 73, username: 'Sandra Davis', email: 'u.bktpnn@ksnjqniwly.eh'}
-// ]
-
-// data.userInfo[0].username = '好'
-
+// 返回用户数据
 Mock.mock(/getUser/, function () {
   return data
 })
 
+// 删除单行数据
 Mock.mock(/deleteUser/, function (options) {
-  var id = parseInt(options.body.split(':')[1])
+  var id = parseInt(options.body.split(':')[1]) // 提取id值
   var index
-  for (var i in data) {
+  for (let i in data) {
     if (data[i].id === id) {
       index = i
       break
@@ -62,14 +34,44 @@ Mock.mock(/deleteUser/, function (options) {
   return data
 })
 
-// Mock.mock(/getUser/, {
-//   'userInfo|20': [{
-//     'id|+1': 1,
-//     'username': () => Rondom.name(),
-//     'email': () => Rondom.email(),
-//     'age|1-100': 18
-//   }]
-//   // 'total': 50
-// })
+// 删除多行数据
+Mock.mock(/removeUsers/, function (options) {
+  var ids = options.body.split(':')[1].split('}')[0].slice(1, -1).split(',') // 提取id数组
+  for (let i in ids) {
+    for (let j in data) {
+      if (data[j].id === parseInt(ids[i])) {
+        data.splice(j, 1)
+      }
+    }
+  }
+  return data
+})
 
-// console.log(JSON.stringify(data, null, 4))
+// 修改数据
+Mock.mock(/updateUser/, options => {
+  var id = parseInt(options.body.split(':')[1].slice(0, 1))
+  var infos = options.body.slice(16, -2).split(',')
+  var username = infos[0].slice(12, -1)
+  var email = infos[1].slice(9, -1)
+  var age = parseInt(infos[2].slice(6))
+  for (let i in data) {
+    if (data[i].id === id) {
+      data[i].username = username
+      data[i].email = email
+      data[i].age = age
+    }
+  }
+  return data
+})
+
+// 创建用户
+Mock.mock(/createUser/, options => {
+  var infos = options.body.slice(9, -2).split(',')
+  var username = infos[0].slice(12, -1)
+  var email = infos[1].slice(9, -1)
+  var age = parseInt(infos[2].slice(6))
+  var id = data[data.length - 1].id + 1
+  var newUser = {'id': id, 'age': age, 'username': username, 'email': email}
+  data.push(newUser)
+  return data
+})
