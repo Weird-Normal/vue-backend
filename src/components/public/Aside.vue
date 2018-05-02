@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: 'Aside1',
+  name: 'Aside',
   data () {
     return {
     }
@@ -50,12 +50,5 @@ export default {
 </script>
 
 <style>
-/* .my-aside {
-  margin-left: -90px
-}
-
-.el-menu-item-group__title {
-    margin-left: -50px;
-} */
 
 </style>

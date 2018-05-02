@@ -241,6 +241,8 @@ export default {
       this.placeholder = placeholders[val]
       console.log(`搜索字段：${val}`)
     },
+    query () {
+    },
     // 单行点击
     // rowClick (row, event) {
     //   // var index = $.inArray(row, this.selected)
@@ -265,7 +267,7 @@ export default {
         this.userData = res.data
         this.page.total = res.data.total
         this.loading = false
-        console.log(res)
+        // console.log(res)
       }, err => {
         console.log(err)
       })
