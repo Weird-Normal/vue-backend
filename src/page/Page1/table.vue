@@ -201,9 +201,6 @@ export default {
       placeholder: placeholders['username']
     }
   },
-  // created () {
-  //   this.getUsersData()
-  // },
   mounted: function () {
     this.getUsersData()
   },
@@ -243,17 +240,6 @@ export default {
     },
     query () {
     },
-    // 单行点击
-    // rowClick (row, event) {
-    //   // var index = $.inArray(row, this.selected)
-    //   // if (index < 0) {
-    //   //   this.selected.push(row)
-    //   //   this.$refs.usersTable.toggleRowSelection(row, true)
-    //   // } else {
-    //   //   this.selected.splice(index, 1)
-    //   //   this.$refs.usersTable.toggleRowSelection(row, false)
-    //   // }
-    // },
     setCurrent (user) {
       this.currentId = user.id
       this.update.username = user.username
@@ -271,16 +257,6 @@ export default {
       }, err => {
         console.log(err)
       })
-
-      // 调用封装的api
-      // this.loading = true
-      // api._get().then(res => {
-      //   this.userData = res.userInfo
-      //   this.page.total = res.total
-      //   this.loading = false
-      // }, err => {
-      //   console.log(err)
-      // })
     },
     // 关闭创建用户表单
     closeCreate () {
@@ -294,15 +270,7 @@ export default {
     createUser () {
       this.$refs.create.validate((valid) => {
         if (valid) {
-          // this.create.id = getuuid()
-          // this.create.id = ''
           this.createLoading = true
-          // api._post(this.create).then(res => {
-          //   this.$message.success('创建用户成功！')
-          //   this.dialogCreateVisible = false
-          //   this.createLoading = false
-          //   this.reset()
-          //   this.getUsersData()
           this.$axios.post('/createUser', {info: this.create}).then(res => {
             this.$message.success('创建用户成功!')
             this.closeCreate()
@@ -343,20 +311,6 @@ export default {
             }
             this.updateLoading = false
           })
-          // api._update(this.currentId, this.update).then(res => {
-          //   this.$message.success('修改用户资料成功！')
-          //   this.dialogUpdateVisible = false
-          //   this.updateLoading = false
-          //   this.getUsersData()
-          // }).catch(res => {
-          //   var data = res
-          //   if (data instanceof Array) {
-          //     this.$message.error(data[0]['message'])
-          //   } else if (data instanceof Object) {
-          //     this.$message.error(data['message'])
-          //   }
-          //   this.updateLoading = false
-          // })
         } else {
           return false
         }
@@ -376,15 +330,6 @@ export default {
         }).catch(res => {
           this.$message.error('删除失败！')
         })
-
-        // 调用
-        // api._remove(user).then(res => {
-        //   this.$message.success('成功删除了用户' + user.username + '!')
-        //   this.getUsers()
-        //   console.log(user.id)
-        // }).catch(res => {
-        //   this.$message.error('删除失败!')
-        // })
       }).catch(() => {
         this.$message.info('已取消操作!')
       })
@@ -406,13 +351,6 @@ export default {
         }).catch(res => {
           this.$message.error('删除失败！')
         })
-        // 调用api
-        // api._removes().then(res => {
-        //   this.$message.success('删除了' + this.selected.length + '个用户!')
-        //   this.getUsers()
-        // }).catch(res => {
-        //   this.$message.error('删除失败!')
-        // })
       }).catch(() => {
         this.$message('已取消操作!')
       })
