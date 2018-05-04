@@ -6,13 +6,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import './mock/mock'
-import Axios from 'axios'
+// import Axios from 'axios'
+import axios from './util/http'
 
 Vue.use(ElementUI)
 
-Vue.prototype.$axios = Axios
+Vue.prototype.$axios = axios
 // Axios.defaults.baseURL = 'https://localhost:8080'
-Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 Vue.config.productionTip = false
 

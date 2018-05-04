@@ -39,27 +39,10 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // alert('submit!')
-          alert(this.loginForm.username)
-          alert(this.loginForm.password)
-          this.$axios({
-            method: 'POST',
-            // url: 'https://192.168.1.109:9443/demo/myweb/login',
-            url: 'http://192.168.1.105:8080/bu/yp/tablelist.do',
-            // url: 'http://rap2api.taobao.org/app/mock/10363/example/login',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            // baseURL: 'https://192.168.1.109:9443/demo/myweb',
-            // withCredentials: true,
-            data: {
-              // username: this.loginForm.username,
-              // password: this.loginForm.password
-              id: 1
-            }
-          }).then(res => {
-            alert(res)
-            console.log(res)
+          var qs = require('qs')
+
+          this.$axios.post('https://192.168.1.109:9443/demo/myweb/login', qs.stringify({username: this.loginForm.username, password: this.loginForm.password})).then(res => {
+            alert(res.data.taken)
           }).catch(res => {
             alert(res)
           })
