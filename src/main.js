@@ -36,6 +36,7 @@ Axios.interceptors.response.use(response => {
   if (error.response) {
     switch (error.response.status) {
       case 401:
+      case 403:
         this.$store.commit('delToken')
         router.replace({
           path: '/Login',
@@ -43,6 +44,7 @@ Axios.interceptors.response.use(response => {
             redirect: router.currentRoute.fullPath
           }
         })
+        break
     }
   }
   return Promise.reject(error.response.data)

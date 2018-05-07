@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/util/store'
 // import HelloWorld from '@/components/HelloWorld'
-// import Login from '@/page/Login'
+import Login from '@/page/Login'
 import Index from '@/page/Index'
 import Page1 from '@/page/Page1'
 import Page2 from '@/page/Page2'
@@ -25,32 +25,34 @@ Vue.use(VueRouter)
 //           {
 //             path: '/page1/table',
 //             name: 'Table',
-//             component: Table
+//             component: Table,
+//             meta: {requireAuth: true}
 //           }
-//         ]
+//         ],
+//         meta: {requireAuth: true}
 //       },
 //       {
 //         path: '/page2',
 //         name: 'Page2',
-//         component: Page2
+//         component: Page2,
+//         meta: {requireAuth: true}
 //       },
 //       {
 //         path: '/page3',
 //         name: 'Page3',
-//         component: Page3
+//         component: Page3,
+//         meta: {requireAuth: true}
 //       }
-//     ]
+//     ],
+//     meta: {requireAuth: true}
+//   },
+//   {
+//     path: '/Login',
+//     name: 'Login',
+//     component: Login
 //   }
 // ]
-
-export default new VueRouter({
-  // routes: [
-  //   {
-  //     path: '/Login',
-  //     name: 'Login',
-  //     component: Login
-  //   }
-  // ],
+const router = new VueRouter({
   routes: [
     {
       path: '/',
@@ -66,31 +68,46 @@ export default new VueRouter({
             {
               path: '/page1/table',
               name: 'Table',
-              component: Table
+              component: Table,
+              meta: {requireAuth: true}
             }
-          ]
+          ],
+          meta: {requireAuth: true}
         },
         {
           path: '/page2',
           name: 'Page2',
-          component: Page2
+          component: Page2,
+          meta: {requireAuth: true}
         },
         {
           path: '/page3',
           name: 'Page3',
-          component: Page3
+          component: Page3,
+          meta: {requireAuth: true}
         }
-      ]
+      ],
+      meta: {requireAuth: true}
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login
     }
   ],
   mode: 'history' // 干掉地址栏里边的#号键
-}).beforeEach((to, from, next) => {
-  if (to.matched.some(r => r.meta.requireAuth)) { // 这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
+})
+
+router.beforeEach((to, from, next) => {
+  // if (to.matched.some(r => r.meta.requireAuth)) { // 这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
+  if (to.meta.requireAuth) {
     if (store.state.token) {
       next()
     } else {
       next({
         path: '/Login',
+        name: 'Login',
+        component: Login,
         query: {redirect: to.fullPath}
       })
     }
@@ -98,3 +115,5 @@ export default new VueRouter({
     next()
   }
 })
+
+export default router
