@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    token: ''
+    token: '',
+    username: ''
   },
   mutations: {
     // 设置token
@@ -13,10 +14,18 @@ const store = new Vuex.Store({
       state.token = token
       sessionStorage.token = token
     },
-    // 清楚token
+    // 删除token
     delToken (state) {
       state.token = ''
       sessionStorage.removeItem('token')
+    },
+    // 保存用户名
+    setUserName (state, username) {
+      state.username = username
+    },
+    // 删除用户名
+    delUserName (state) {
+      state.username = ''
     }
   }
 })

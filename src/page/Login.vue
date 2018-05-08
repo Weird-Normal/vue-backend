@@ -43,12 +43,13 @@ export default {
           var qs = require('qs')
 
           this.$axios.post('https://192.168.1.109:9443/demo/myweb/login', qs.stringify({username: this.loginForm.username, password: this.loginForm.password})).then(res => {
-            alert(res.data.taken)
+            console.log(res.data)
             // 根据 store 中的方法将 token 保存至 localStorage 中
-            this.$store.commit('setToken', res.data['Authorization'])
+            this.$store.commit('setToken', res.data)
+            this.$store.commit('setUserName', this.loginForm.username)
             if (store.state.token) {
               this.$router.push('/')
-              console.log(store.state.token)
+              // console.log('store:' + store.state.token)
             } else {
               this.$router.replace('/Login')
             }
