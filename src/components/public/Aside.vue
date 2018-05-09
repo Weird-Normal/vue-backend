@@ -1,44 +1,52 @@
 <template>
   <div class="my-aside">
     <el-menu default-active="1" @open="handleOpen" @close="handleClose">
-      <el-submenu index="1">
+      <el-submenu v-for="(item, index) in childMenu" :key="index" :index="(index + 1).toString()">
         <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
+          <i class="el-icon-menu"></i>
+          <span>{{ item.nav }}</span>
         </template>
-        <el-menu-item-group>
-          <template slot="title">分组一</template>
-          <el-menu-item index="1-1"><router-link to="/page1/table">表格</router-link></el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
+        <el-menu-item-group v-for="(item2, index2) in item.group" :key="index2">
+          <template slot="title">{{ item2.name }}</template>
+          <el-menu-item v-for="(item3, index3) in item2.menu" :key="index3" :index="(index+1).toString() + '-' + (index3+1).toString()">
+            <router-link :to="item3.path">{{ item3.name }}</router-link>
+          </el-menu-item>
         </el-menu-item-group>
-        <el-menu-item-group title="分组2">
-          <el-menu-item index="1-3">选项3</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
       </el-submenu>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
+import store from '@/util/store'
+import router from '@/router'
+
 export default {
   name: 'Aside',
   data () {
     return {
+      childMenu: []
     }
   },
+  mounted: function () {
+    this.getData()
+  },
   methods: {
+    getData () {
+      var qs = require('qs')
+      // alert('-----' + window.location.href)
+      // alert('$$$' + router.match(location).path)
+      var path = router.match(location).path + '/'
+      this.$axios.post('https://192.168.1.109:9443/demo/myweb/getChildMenu', qs.stringify({username: store.state.username, path: path}))
+        .then(res => {
+          console.log(JSON.parse(res.data))
+          // console.log('childMenu:' + JSON.parse(res))
+          this.childMenu = JSON.parse(res.data)
+          console.log(this.childMenu)
+        }).catch(res => {
+          console.log(res)
+        })
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },

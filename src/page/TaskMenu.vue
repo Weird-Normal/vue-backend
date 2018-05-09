@@ -15,7 +15,7 @@
 import Aside from '@/components/public/Aside'
 
 export default {
-  name: 'Page1',
+  name: 'TaskMenu',
   data () {
     return {
     }

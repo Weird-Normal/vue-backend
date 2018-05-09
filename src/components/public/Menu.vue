@@ -29,7 +29,9 @@ export default {
     getMenu () {
       var qs = require('qs')
       this.$axios.post('https://192.168.1.109:9443/demo/myweb/getMenuLevel1', qs.stringify({username: store.state.username})).then(res => {
+        // console.log(res)
         this.menu = JSON.parse(res.data)
+        // console.log(JSON.parse(res.data))
       }).catch(res => {
         console.log(res)
       })
