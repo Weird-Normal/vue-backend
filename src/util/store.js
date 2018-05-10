@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     token: '',
-    username: ''
+    username: '',
+    permit: []
   },
   mutations: {
     // 设置token
@@ -26,6 +27,10 @@ const store = new Vuex.Store({
     // 删除用户名
     delUserName (state) {
       state.username = ''
+    },
+    // 保存页面权限
+    setPermit (state, permit) {
+      state.permit = permit
     }
   }
 })

@@ -113,7 +113,7 @@ var placeholders = {
 }
 
 export default {
-  name: 'Table',
+  name: 'S1',
   data () {
     return {
       userData: [],

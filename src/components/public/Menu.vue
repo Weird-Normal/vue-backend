@@ -21,6 +21,7 @@ export default {
   },
   mounted: function () {
     this.getMenu()
+    this.getPermit()
   },
   methods: {
     handleSelect (key, keyPath) {
@@ -35,6 +36,17 @@ export default {
       }).catch(res => {
         console.log(res)
       })
+    },
+    getPermit () {
+      var qs = require('qs')
+      this.$axios.post('https://192.168.1.109:9443/demo/myweb/getPermit', qs.stringify({username: store.state.username}))
+        .then(res => {
+          // console.log(JSON.parse(res.data))
+          this.$store.commit('setPermit', JSON.parse(res.data))
+          // console.log(store.state.permit)
+        }).catch(res => {
+          console.log(res)
+        })
     }
   }
 }

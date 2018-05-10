@@ -19,7 +19,6 @@
 
 <script>
 import store from '@/util/store'
-import router from '@/router'
 
 export default {
   name: 'Aside',
@@ -34,15 +33,11 @@ export default {
   methods: {
     getData () {
       var qs = require('qs')
-      // alert('-----' + window.location.href)
-      // alert('$$$' + router.match(location).path)
-      var path = router.match(location).path + '/'
+      var path = this.$route.path + '/'
       this.$axios.post('https://192.168.1.109:9443/demo/myweb/getChildMenu', qs.stringify({username: store.state.username, path: path}))
         .then(res => {
-          console.log(JSON.parse(res.data))
-          // console.log('childMenu:' + JSON.parse(res))
           this.childMenu = JSON.parse(res.data)
-          console.log(this.childMenu)
+          // console.log(res.data)
         }).catch(res => {
           console.log(res)
         })
