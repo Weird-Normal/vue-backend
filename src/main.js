@@ -13,7 +13,7 @@ import store from './util/store'
 Vue.use(ElementUI)
 
 Vue.prototype.$axios = Axios
-// Axios.defaults.baseURL = 'https://localhost:8080'
+Axios.defaults.baseURL = 'https://192.168.1.109:9443/demo/myweb'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Axios.defaults.headers.common['Authorization'] = store.state.token
 

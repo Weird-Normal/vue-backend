@@ -29,7 +29,7 @@ export default {
     },
     getMenu () {
       var qs = require('qs')
-      this.$axios.post('https://192.168.1.109:9443/demo/myweb/getMenuLevel1', qs.stringify({username: store.state.username})).then(res => {
+      this.$axios.post('/getMenuLevel1', qs.stringify({username: store.state.username})).then(res => {
         // console.log(res)
         this.menu = JSON.parse(res.data)
         // console.log(JSON.parse(res.data))
@@ -39,11 +39,11 @@ export default {
     },
     getPermit () {
       var qs = require('qs')
-      this.$axios.post('https://192.168.1.109:9443/demo/myweb/getPermit', qs.stringify({username: store.state.username}))
+      this.$axios.post('/getPermit', qs.stringify({username: store.state.username}))
         .then(res => {
-          // console.log(JSON.parse(res.data))
+          console.log(JSON.parse(res.data))
           this.$store.commit('setPermit', JSON.parse(res.data))
-          // console.log(store.state.permit)
+          console.log(store.state.permit)
         }).catch(res => {
           console.log(res)
         })
