@@ -54,7 +54,7 @@ export default {
               this.$router.replace('/Login')
             }
           }).catch(res => {
-            alert(res)
+            console.log(res)
           })
         } else {
           console.log('error submit')
