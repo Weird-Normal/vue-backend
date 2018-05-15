@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <el-container>
       <el-aside width="200px">
         <Aside></Aside>

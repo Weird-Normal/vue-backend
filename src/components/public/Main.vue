@@ -9,7 +9,10 @@
     </el-menu>
   </el-row>
 
-  <router-view ></router-view>
+  <div id="my-content">
+    <router-view ></router-view>
+  </div>
+  
   </div>
 </template>
 

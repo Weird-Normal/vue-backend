@@ -1,6 +1,6 @@
 <template>
-  <el-footer>
-    Footer
+  <el-footer id="my-footer">
+      Footer
   </el-footer>
 </template>
 
@@ -15,5 +15,9 @@ export default {
 </script>
 
 <style>
-
+footer#my-footer {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}
 </style>
