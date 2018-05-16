@@ -24,15 +24,13 @@ export default {
     this.getPermit()
   },
   methods: {
-    handleSelect (key, keyPath) {
-      console.log(key, keyPath)
-    },
+    // handleSelect (key, keyPath) {
+    //   console.log(key, keyPath)
+    // },
     getMenu () {
       var qs = require('qs')
       this.$axios.post('/getMenuLevel1', qs.stringify({username: store.state.username})).then(res => {
-        // console.log(res)
         this.menu = JSON.parse(res.data)
-        // console.log(JSON.parse(res.data))
       }).catch(res => {
         console.log(res)
       })
@@ -41,9 +39,7 @@ export default {
       var qs = require('qs')
       this.$axios.post('/getPermit', qs.stringify({username: store.state.username}))
         .then(res => {
-          console.log(JSON.parse(res.data))
           this.$store.commit('setPermit', JSON.parse(res.data))
-          console.log(store.state.permit)
         }).catch(res => {
           console.log(res)
         })

@@ -1,28 +1,24 @@
 <template>
   <div>
-    <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-
-      <el-header>
-        <Menu></Menu>
-      </el-header>
-
-      <router-view></router-view>
-
-      <!-- <el-row>
-        <Main></Main>
-      </el-row> -->
-
+    <!-- <el-container> -->
+      <div id="my-header">
+        <el-header>
+          <Header></Header>
+        </el-header>
+        <el-header>
+          <Menu></Menu>
+        </el-header>
+      </div>
+      <div id="my-page">
+        <router-view></router-view>
+      </div>
       <Footer></Footer>
-    </el-container>
+    <!-- </el-container> -->
   </div>
 </template>
 
 <script>
 import Header from '@/components/public/Header'
-// import Main from '@/components/public/Main'
 import Footer from '@/components/public/Footer'
 import Menu from '@/components/public/Menu'
 
@@ -34,8 +30,6 @@ export default {
   },
   components: {
     Header,
-    // Aside,
-    // Main,
     Menu,
     Footer
   }
@@ -78,5 +72,16 @@ body > .el-container {
 
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
+}
+
+#my-app {
+  min-height: 100%;
+  height: auto !important;
+  height: 100;
+  position: relative
+}
+
+#my-page {
+  padding-bottom: 60px
 }
 </style>
