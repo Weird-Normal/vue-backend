@@ -77,4 +77,8 @@ body > .el-container {
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
 }
+
+#my-page {
+  padding-bottom: 60px
+}
 </style>
