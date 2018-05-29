@@ -2,7 +2,7 @@
   <div >
     <el-container>
       <el-aside width="200px">
-        <Aside></Aside>
+        <Aside1></Aside1>
       </el-aside>
       <el-main>
         <router-view></router-view>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Aside from '@/components/public/Aside'
+import Aside1 from '@/components/aside/Aside1'
 
 export default {
   name: 'Page1',
@@ -21,7 +21,7 @@ export default {
     }
   },
   components: {
-    Aside
+    Aside1
   }
 }
 </script>

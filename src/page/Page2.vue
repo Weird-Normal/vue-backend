@@ -2,7 +2,9 @@
   <div>
     <el-container>
 
-    <el-aside width="200px">侧边栏</el-aside>
+    <el-aside width="200px">
+      <Aside2></Aside2>
+    </el-aside>
     <el-container>
       <el-main>
         Page2
@@ -13,11 +15,15 @@
 </template>
 
 <script>
+import Aside2 from '@/components/aside/Aside2'
 export default {
   name: 'Page2',
   data () {
     return {
     }
+  },
+  components: {
+    Aside2
   }
 }
 </script>
