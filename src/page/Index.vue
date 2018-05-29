@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container>
+    <div id="my-header">
       <el-header>
         <Header></Header>
       </el-header>
@@ -8,15 +8,13 @@
       <el-header>
         <Menu></Menu>
       </el-header>
+    </div>
 
+    <div id="my-page">
       <router-view></router-view>
+    </div>
 
-      <!-- <el-row>
-        <Main></Main>
-      </el-row> -->
-
-      <Footer></Footer>
-    </el-container>
+    <Footer></Footer>
   </div>
 </template>
 
