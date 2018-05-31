@@ -7,7 +7,7 @@
     </el-aside>
     <el-container>
       <el-main>
-        Page2
+        <router-view></router-view>
       </el-main>
     </el-container>
     </el-container>

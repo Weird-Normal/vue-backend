@@ -6,7 +6,8 @@ import Page1 from '@/page/Page1'
 import Page2 from '@/page/Page2'
 import Page3 from '@/page/Page3'
 import Table from '@/page/Page1/table'
-import Auth from '@/page/Page2/auth'
+import Role from '@/page/Page2/role'
+import Test from '@/page/Page2/test'
 Vue.use(Router)
 
 export default new Router({
@@ -35,9 +36,14 @@ export default new Router({
           component: Page2,
           children: [
             {
-              path: '/page2/auth',
-              name: '权限管理',
-              component: Auth
+              path: '/page2/role',
+              name: 'Role',
+              component: Role
+            },
+            {
+              path: '/page2/test',
+              name: 'Test',
+              component: Test
             }
           ]
         },

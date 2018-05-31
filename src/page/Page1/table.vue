@@ -50,17 +50,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="page.cpage"
-          :page-sizes="[10, 20, 50, 70]"
-          :page-size="page.psize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="userData.length">
-        </el-pagination>
-      </div>
+      <Pagination :page="page" :data="userData"></Pagination>
     </el-row>
 
     <!-- 创建用户 modal -->
@@ -106,6 +96,8 @@
 
 <script>
 // import api from '@/api/api.js'
+import Pagination from '@/components/pagination/pagination'
+import Rule from '@/assets/js/rule'
 
 var placeholders = {
   'username': '请输入查找用户名',
@@ -138,58 +130,8 @@ export default {
         age: ''
         // is_active: true
       },
-      rules: {
-        username: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        }, {
-          min: 4,
-          max: 20,
-          message: '长度在 4 到 20 个字符'
-        }, {
-          pattern: /^[A-Za-z0-9]+$/,
-          message: '用户名只能为字母和数字'
-        }],
-        email: [{
-          required: true,
-          message: '请输入邮箱',
-          trigger: 'blur'
-        }, {
-          type: 'email',
-          message: '邮箱格式不正确'
-        }],
-        age: [{
-          required: true,
-          message: '请输入年龄',
-          trigger: 'blur'
-        }, {
-          type: 'number',
-          message: '年龄只能为数字'
-        }]
-      },
-      updateRules: {
-        username: [{
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        }, {
-          min: 4,
-          max: 20,
-          message: '长度在 4 到 20 个字符'
-        }],
-        email: [{
-          type: 'email',
-          message: '邮箱格式不正确'
-        }],
-        age: [{
-          required: true,
-          message: '年龄不能为空'
-        }, {
-          type: 'number',
-          message: '年龄必须为数字值'
-        }]
-      },
+      rules: Rule.rules(),
+      updateRules: Rule.updateRules(),
       loading: true,
       keywords: '', // 搜索框的关键字内容
       select: 'username', // 搜索框的搜索字段
@@ -200,6 +142,9 @@ export default {
       updateLoading: false,
       placeholder: placeholders['username']
     }
+  },
+  components: {
+    Pagination
   },
   // created () {
   //   this.getUsersData()
@@ -222,18 +167,6 @@ export default {
       } else {
         this.page.sorts = ''
       }
-      this.getUsersData()
-    },
-    // 每页显示的条数
-    handleSizeChange (val) {
-      console.log(`每页${val}条`)
-      this.page.psize = val
-      this.getUsersData()
-    },
-    // 当前页选择
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-      this.page.cpage = val
       this.getUsersData()
     },
     // 搜索字段的变更
