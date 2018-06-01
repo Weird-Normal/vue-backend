@@ -11,7 +11,7 @@
           <el-menu-item index="/page1/table">表格</el-menu-item>
           <el-menu-item index="1-2">选项2</el-menu-item>
         </el-menu-item-group>
-        <el-menu-item-group tit le="分组2">
+        <el-menu-item-group title="分组2">
           <el-menu-item index="1-3">选项3</el-menu-item>
         </el-menu-item-group>
         <el-submenu index="1-4">
