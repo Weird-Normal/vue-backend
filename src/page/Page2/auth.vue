@@ -2,18 +2,23 @@
   <div>
     <el-row>
       权限设置
-      <el-button>返回</el-button>
+      <el-button @click="forward()">返回</el-button>
     </el-row>
     <el-form>
-      <el-form-item label="商品管理">
-      <!-- <el-checkbox name="type">美食/餐厅线上活动</el-checkbox>
-      <el-checkbox label="地推活动" name="type"></el-checkbox>
-      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox> -->
+      <!-- <el-form-item label="商品管理">
         <el-checkbox v-bind="key" v-for="item in goods">{{ item }}</el-checkbox>
       </el-form-item>
       <el-form-item label="订单管理">
         <el-checkbox v-bind="key" v-for="item in goods">{{ item }}</el-checkbox>
+      </el-form-item> -->
+      <el-form-item v-for="item in auth" v-bind="key">
+        {{ item.label}}
+        <el-checkbox v-bind="key" v-for="i in item.detail">
+          {{ i }}
+        </el-checkbox>
+      </el-form-item>
+      <el-form-item>
+        <el-button>保存</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -102,6 +107,9 @@ export default {
           this.tableDataEnd.push(list[from])
         }
       }
+    },
+    forward () {
+      this.$router.push('/page2/branch')
     }
   }
 }

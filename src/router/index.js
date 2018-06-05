@@ -10,7 +10,8 @@ import Branch from '@/page/Page2/branch'
 import Member from '@/page/Page2/member'
 import Operate from '@/page/Page2/operate'
 import Database from '@/page/Page2/database'
-import Auth from '@/page/Page2/Auth'
+import Auth from '@/page/Page2/auth'
+import AddMember from '@/page/Page2/addMember'
 Vue.use(Router)
 
 export default new Router({
@@ -67,6 +68,11 @@ export default new Router({
               path: '/page2/auth',
               name: 'Auth',
               component: Auth
+            }, 
+            {
+              path: '/page2/addMember',
+              name: 'AddMember',
+              component: AddMember
             }
           ]
         },

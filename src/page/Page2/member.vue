@@ -9,34 +9,39 @@
 
     <div class="">
       <el-row class="my-row">
-        <el-col :span="6">
+        <el-col :span="7">
           <span>角色名称：</span>
-          <el-input v-model='searchRolename' placeholder='请输入姓名' style='width:240px'></el-input>
+          <el-input v-model='searchRolename' placeholder='请输入姓名' style="width: 200px"></el-input>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <span>角色状态：</span>
           <el-select v-model="value" placeholder="请选择">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-col>
         <!-- <el-button type='primary' icon="el-icon-search" @click='doFilter'>搜索</el-button> -->
-        <el-button type='primary' icon="el-icon-search">搜索</el-button>
-        <el-button type="primary" icon="el-icon-edit">新增</el-button>
+        <el-col :span="10">
+          <el-button type='primary' icon="el-icon-search">搜索</el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="add">新增</el-button>
+        </el-col>
       </el-row>
-      <el-table :data='roleData' border style='width: 100%'>
-        <el-table-column prop='id' label='编号'></el-table-column>
-        <el-table-column prop='role' label='角色名称'></el-table-column>
-        <el-table-column prop='note' label='备注'></el-table-column>
-        <el-table-column prop='status' label='角色状态'>
+      <el-table :data='memberData' border style='width: 100%'>
+        <el-table-column prop='account' label='账号'></el-table-column>
+        <el-table-column prop='name' label='姓名'></el-table-column>
+        <el-table-column prop='email' label='邮箱地址'></el-table-column>
+        <el-table-column prop='branch' label='所属部门'></el-table-column>
+        <el-table-column prop='addTime' label='添加时间'></el-table-column>
+        <el-table-column prop='lastTime' label='最后登录'></el-table-column>
+        <el-table-column prop='status' label='角色状态' width="150">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">已启用</span>
-            <span v-else style="color: red">已禁用</span>
+            <el-switch v-model="scope.row.status" active-text="启用" inactive-text="禁用"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right" label="操作" width="180">
           <template slot-scope="scope">
             <el-button type="primary" plain size="small" @click="editRole(scope.row)">角色编辑</el-button>
-            <el-button type="success" size="small" @click="setCurrent(scope.row)">设置人员</el-button>
+            <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
+            <!-- <el-button type="success" size="small" @click="setCurrent(scope.row)">设置人员</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -75,30 +80,42 @@ export default {
   name: 'Member',
   data () {
     return {
-      roleData: [
+      memberData: [
         {
-          id: '01',
-          role: '市场部主管',
-          note: '',
-          status: 1
+          account: 'Jon',
+          name: '王五',
+          email: 'dsfas@csd.cn',
+          branch: '技术部',
+          addTime: '2018-6-1 00:00:00',
+          lastTime: '2018-6-5 00:00:00',
+          status: true
         },
         {
-          id: '02',
-          role: '市场部普通员工',
-          note: '',
-          status: 0
+          account: 'Tim',
+          name: '李四',
+          email: 'vdsfas@csd.cn',
+          branch: '技术部',
+          addTime: '2018-6-1 00:00:00',
+          lastTime: '2018-6-5 00:00:00',
+          status: false
         },
         {
-          id: '03',
-          role: '技术部主管',
-          note: '',
-          status: 1
+          account: 'qwedc',
+          name: '王开宇',
+          email: 'bffas@csd.cn',
+          branch: '技术部',
+          addTime: '2018-6-1 00:00:00',
+          lastTime: '2018-6-5 00:00:00',
+          status: false
         },
         {
-          id: '04',
-          role: '技术部普通员工',
-          note: '',
-          status: 0
+          account: 'Tim',
+          name: '李四',
+          email: 'vdsfas@csd.cn',
+          branch: '技术部',
+          addTime: '2018-6-1 00:00:00',
+          lastTime: '2018-6-5 00:00:00',
+          status: true
         }
       ],
       page: {
@@ -138,6 +155,9 @@ export default {
       this.update.note = user.note
       this.update.status = user.status
       this.dialogUpdateVisible = true
+    },
+    add () {
+      this.$router.push('/page2/addMember')
     }
   }
 }
