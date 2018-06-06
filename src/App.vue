@@ -28,4 +28,8 @@ html,body {
   height: 100%;
   position: relative
 }
+
+.el-main {
+  border-left: solid 1px #e6e6e6;
+}
 </style>

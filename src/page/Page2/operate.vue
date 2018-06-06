@@ -10,60 +10,28 @@
     <div class="">
       <el-row class="my-row">
         <el-col :span="6">
-          <span>角色名称：</span>
-          <el-input v-model='searchRolename' placeholder='请输入姓名' style='width:240px'></el-input>
+          <span>操作人员：</span>
+          <el-input v-model='searchRolename' placeholder='请输入操作人员账号' style='width:240px'></el-input>
         </el-col>
         <el-col :span="6">
-          <span>角色状态：</span>
-          <el-select v-model="value" placeholder="请选择">
+          <span>操作日期：</span>
+          <!-- <el-select v-model="value" placeholder="请选择">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
+          </el-select> -->
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"></el-date-picker>
         </el-col>
         <!-- <el-button type='primary' icon="el-icon-search" @click='doFilter'>搜索</el-button> -->
         <el-button type='primary' icon="el-icon-search">搜索</el-button>
-        <el-button type="primary" icon="el-icon-edit">新增</el-button>
       </el-row>
       <el-table :data='roleData' border style='width: 100%'>
         <el-table-column prop='id' label='编号'></el-table-column>
-        <el-table-column prop='role' label='角色名称'></el-table-column>
-        <el-table-column prop='note' label='备注'></el-table-column>
-        <el-table-column prop='status' label='角色状态'>
-          <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">已启用</span>
-            <span v-else style="color: red">已禁用</span>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作">
-          <template slot-scope="scope">
-            <el-button type="primary" plain size="small" @click="editRole(scope.row)">角色编辑</el-button>
-            <el-button type="success" size="small" @click="setCurrent(scope.row)">设置人员</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column prop='name' label='操作者'></el-table-column>
+        <el-table-column prop='time' label='操作日期'></el-table-column>
+        <el-table-column prop='record' label='操作记录'></el-table-column>
       </el-table>
 
       <Pagination :page="page" :data="roleData"></Pagination>
     </div>
-
-    <!-- 修改用户 modal -->
-    <el-dialog title="编辑角色" :visible.sync="dialogUpdateVisible" :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-form id="#update" :model="update" :rules="updateRules" ref="update" label-width="100px">
-        <el-form-item label="角色名称" prop="role">
-          <el-input v-model="update.role"></el-input>
-        </el-form-item>
-        <el-form-item label="备注" prop="note">
-          <el-input v-model="update.note"></el-input>
-        </el-form-item>
-        <el-form-item label="角色状态" prop="status">
-          <!-- <el-input v-model.number="update.status"></el-input> -->
-          <!-- <el-switch v-model.number="update.status" active-text="启动" inactive-text="禁用"></el-switch> -->
-          <el-switch v-model="update.status" active-value=1 inactive-value=0 active-text="启动" inactive-text="禁用"></el-switch>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogUpdateVisible = false">取消</el-button>
-        <el-button type="primary" :loading="updateLoading" @click="updateRole">确定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -75,30 +43,33 @@ export default {
   name: 'Operate',
   data () {
     return {
+      form: {
+        data1: ''
+      },
       roleData: [
         {
-          id: '01',
-          role: '市场部主管',
-          note: '',
-          status: 1
+          id: '30031001',
+          name: 'admin',
+          time: '2018-1-1 11:11:11',
+          record: '增加用户wei'
         },
         {
-          id: '02',
-          role: '市场部普通员工',
-          note: '',
-          status: 0
+          id: '30031001',
+          name: 'admin',
+          time: '2018-1-1 11:11:11',
+          record: '增加用户wei'
         },
         {
-          id: '03',
-          role: '技术部主管',
-          note: '',
-          status: 1
+          id: '30031001',
+          name: 'admin',
+          time: '2018-1-1 11:11:11',
+          record: '增加用户wei'
         },
         {
-          id: '04',
-          role: '技术部普通员工',
-          note: '',
-          status: 0
+          id: '30031001',
+          name: 'admin',
+          time: '2018-1-1 11:11:11',
+          record: '增加用户wei'
         }
       ],
       page: {

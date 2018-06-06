@@ -1,6 +1,6 @@
 <template>
   <div class="my-aside">
-    <el-menu router default-active="1" @open="handleOpen" @close="handleClose">
+    <el-menu router default-active="1" @open="handleOpen" @close="handleClose" class="my-menu">
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>

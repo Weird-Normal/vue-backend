@@ -16,7 +16,7 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="所属部门">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
+          <el-select v-model="form.region" placeholder="请选择活动区域" style="width: 100%">
             <el-option label="技术部" value="shanghai"></el-option>
             <el-option label="销售部" value="beijing"></el-option>
           </el-select>
@@ -67,6 +67,11 @@ export default {
   border: 1px solid gainsboro;
   margin-top: 1rem;
   padding: 2rem
+}
+
+.add-form>form {
+  width: 500px;
+  margin: 0 auto;
 }
 </style>
 
