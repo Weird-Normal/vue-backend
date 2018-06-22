@@ -11,9 +11,9 @@
       <el-form-item label="订单管理">
         <el-checkbox v-bind="key" v-for="item in goods">{{ item }}</el-checkbox>
       </el-form-item> -->
-      <el-form-item v-for="item in auth" v-bind="key">
+      <el-form-item v-for="item in auth" :key="item">
         {{ item.label}}
-        <el-checkbox v-bind="key" v-for="i in item.detail">
+        <el-checkbox v-for="i in item.detail" :key="i">
           {{ i }}
         </el-checkbox>
       </el-form-item>

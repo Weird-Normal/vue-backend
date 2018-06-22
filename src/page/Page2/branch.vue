@@ -8,22 +8,29 @@
     </el-breadcrumb>
 
     <div class="">
+      <!-- 搜索 开始 -->
       <el-row class="my-row">
-        <el-col :span="6">
-          <span>部门名称</span>
-          <el-input v-model='searchRolename' placeholder='请输入姓名' style='width:240px'></el-input>
-        </el-col>
-        <el-col :span="6">
-          <span>部门状态</span>
-          <el-select v-model="value" placeholder="请选择">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-col>
-        <!-- <el-button type='primary' icon="el-icon-search" @click='doFilter'>搜索</el-button> -->
-        <el-button type='primary' icon="el-icon-search">搜索</el-button>
-        <el-button type="primary" icon="el-icon-edit">新增</el-button>
+        <el-form :inline="true" :model="searchCondition" class="demo-form-inline">
+          <el-form-item label="部门名称">
+            <el-input v-model='searchCondition.branchName' placeholder='请输入部门名称' style='width:240px'></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="部门状态">
+            <el-select v-model="searchCondition.state" placeholder="请选择查询状态">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="已启用" value="1"></el-option>
+              <el-option label="已禁用" value="0"></el-option>
+            </el-select>
+          </el-form-item> -->
+          <!-- <el-form-item id="submit-item">
+            <el-button type='primary' icon="el-icon-search" @click="onSearchSubmit">搜索</el-button>
+          </el-form-item> -->
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-edit" @click="addNewBranch">新增</el-button>
+          </el-form-item>
+        </el-form>
       </el-row>
-      <el-table :data='branchData' border style='width: 100%'>
+      <!-- 搜索 结束 -->
+      <el-table :data='filterData' border style='width: 100%'>
         <el-table-column prop='id' label='编号'></el-table-column>
         <el-table-column prop='name' label='部门名称'></el-table-column>
         <el-table-column prop='describe' label='职能描述'>
@@ -32,21 +39,16 @@
             <span v-else>{{ scope.row.describe }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop='count' label='成员数量'></el-table-column>
+        <el-table-column prop='count' label='成员数量' width="100rem"></el-table-column>
         <el-table-column prop='time' label='添加时间'></el-table-column>
-        <el-table-column prop='status' label='是否启用'>
-          <!-- <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">已启用</span>
-            <span v-else style="color: red">已禁用</span>
-          </template> -->
+        <el-table-column prop='status' label='是否启用' width="150rem">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status" active-text="启用" inactive-text="禁用"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="400rem">
+        <el-table-column fixed="right" label="操作" width="270rem">
           <template slot-scope="scope">
             <el-button type="primary" plain size="small" @click="editRole(scope.row)">角色编辑</el-button>
-            <!-- <el-button type="success" size="small" @click="setCurrent(scope.row)">权限设置</el-button> -->
             <el-button type="success" size="small" @click="setAuth(scope.row)">权限设置</el-button>
             <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
           </template>
@@ -66,8 +68,6 @@
           <el-input v-model="update.note"></el-input>
         </el-form-item>
         <el-form-item label="角色状态" prop="status">
-          <!-- <el-input v-model.number="update.status"></el-input> -->
-          <!-- <el-switch v-model.number="update.status" active-text="启动" inactive-text="禁用"></el-switch> -->
           <el-switch v-model="update.status" active-value=1 inactive-value=0 active-text="启动" inactive-text="禁用"></el-switch>
         </el-form-item>
       </el-form>
@@ -110,7 +110,10 @@ export default {
         cpage: 1
       },
       // selected: [], // 已选择项
-      searchRolename: '',
+      searchCondition: {
+        branchName: ''
+        // state: ''
+      },
       value: '',
       options: [{
         value: 1,
@@ -130,10 +133,32 @@ export default {
       }
     }
   },
+  computed: {
+    filterData: function () {
+      let branchName = this.searchCondition.branchName
+      console.log(branchName)
+      let items1
+      if (branchName) {
+        items1 = this.branchData.filter(function (item) {
+          return Object.keys(item).some(function (key1) {
+            return String(item[key1]).match(branchName)
+          })
+        })
+      } else {
+        items1 = this.branchData
+      }
+
+      return items1
+    }
+  },
   components: {
     Pagination
   },
   methods: {
+    // 搜索
+    // onSearchSubmit () {
+    //   this.branchData = this.branchData.filter()
+    // },
     updateRole () {
 
     },
@@ -154,6 +179,6 @@ export default {
 
 <style>
 .my-row.el-row {
-  padding: 1.2rem 0rem;
+  padding: 1.2rem 0rem 0rem 0rem;
 }
 </style>

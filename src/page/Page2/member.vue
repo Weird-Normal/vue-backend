@@ -9,21 +9,20 @@
 
     <div class="">
       <el-row class="my-row">
-        <el-col :span="7">
-          <span>角色名称：</span>
-          <el-input v-model='searchRolename' placeholder='请输入姓名' style="width: 200px"></el-input>
-        </el-col>
-        <el-col :span="7">
-          <span>角色状态：</span>
-          <el-select v-model="value" placeholder="请选择">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-col>
-        <!-- <el-button type='primary' icon="el-icon-search" @click='doFilter'>搜索</el-button> -->
-        <el-col :span="10">
-          <el-button type='primary' icon="el-icon-search">搜索</el-button>
-          <el-button type="primary" icon="el-icon-edit" @click="add">新增</el-button>
-        </el-col>
+        <el-form :inline="true" class="demo-form-inline">
+          <el-form-item label="角色名称：">
+            <el-input v-model='searchRolename' placeholder='请输入姓名' style="width: 200px"></el-input>
+          </el-form-item>
+          <el-form-item label="角色状态">
+            <el-select v-model="value" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type='primary' icon="el-icon-search">搜索</el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="add">新增</el-button>
+          </el-form-item>
+        </el-form>
       </el-row>
       <el-table :data='memberData' border style='width: 100%'>
         <el-table-column prop='account' label='账号'></el-table-column>
@@ -41,12 +40,11 @@
           <template slot-scope="scope">
             <el-button type="primary" plain size="small" @click="editRole(scope.row)">角色编辑</el-button>
             <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
-            <!-- <el-button type="success" size="small" @click="setCurrent(scope.row)">设置人员</el-button> -->
           </template>
         </el-table-column>
       </el-table>
 
-      <Pagination :page="page" :data="roleData"></Pagination>
+      <Pagination :page="page" :data="memberData"></Pagination>
     </div>
 
     <!-- 修改用户 modal -->
@@ -59,8 +57,6 @@
           <el-input v-model="update.note"></el-input>
         </el-form-item>
         <el-form-item label="角色状态" prop="status">
-          <!-- <el-input v-model.number="update.status"></el-input> -->
-          <!-- <el-switch v-model.number="update.status" active-text="启动" inactive-text="禁用"></el-switch> -->
           <el-switch v-model="update.status" active-value=1 inactive-value=0 active-text="启动" inactive-text="禁用"></el-switch>
         </el-form-item>
       </el-form>
@@ -80,44 +76,7 @@ export default {
   name: 'Member',
   data () {
     return {
-      memberData: [
-        {
-          account: 'Jon',
-          name: '王五',
-          email: 'dsfas@csd.cn',
-          branch: '技术部',
-          addTime: '2018-6-1 00:00:00',
-          lastTime: '2018-6-5 00:00:00',
-          status: true
-        },
-        {
-          account: 'Tim',
-          name: '李四',
-          email: 'vdsfas@csd.cn',
-          branch: '技术部',
-          addTime: '2018-6-1 00:00:00',
-          lastTime: '2018-6-5 00:00:00',
-          status: false
-        },
-        {
-          account: 'qwedc',
-          name: '王开宇',
-          email: 'bffas@csd.cn',
-          branch: '技术部',
-          addTime: '2018-6-1 00:00:00',
-          lastTime: '2018-6-5 00:00:00',
-          status: false
-        },
-        {
-          account: 'Tim',
-          name: '李四',
-          email: 'vdsfas@csd.cn',
-          branch: '技术部',
-          addTime: '2018-6-1 00:00:00',
-          lastTime: '2018-6-5 00:00:00',
-          status: true
-        }
-      ],
+      memberData: [],
       page: {
         psize: 10,
         cpage: 1
@@ -145,7 +104,17 @@ export default {
   components: {
     Pagination
   },
+  mounted: function () {
+    this.getMemberData()
+  },
   methods: {
+    getMemberData () {
+      this.$axios.get('/getMember').then(res => {
+        this.memberData = res.data
+      }, err => {
+        console.log(err)
+      })
+    },
     updateRole () {
 
     },
@@ -165,6 +134,6 @@ export default {
 
 <style>
 .my-row.el-row {
-  padding: 1.2rem 0rem;
+  padding: 1.2rem 0rem 0rem 0rem;
 }
 </style>

@@ -9,19 +9,20 @@
 
     <div class="">
       <el-row class="my-row">
-        <el-col :span="6">
-          <span>角色名称：</span>
-          <el-input v-model='searchRolename' placeholder='请输入姓名' style='width:240px'></el-input>
-        </el-col>
-        <el-col :span="6">
-          <span>角色状态：</span>
-          <el-select v-model="value" placeholder="请选择">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-col>
-        <!-- <el-button type='primary' icon="el-icon-search" @click='doFilter'>搜索</el-button> -->
-        <el-button type='primary' icon="el-icon-search">搜索</el-button>
-        <el-button type="primary" icon="el-icon-edit">新增</el-button>
+        <el-form :inline="true">
+          <el-form-item label="角色名称：">
+            <el-input v-model='searchRolename' placeholder='请输入姓名' style='width:240px'></el-input>
+          </el-form-item>
+          <el-form-item label="角色状态：">
+            <el-select v-model="value" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type='primary' icon="el-icon-search">搜索</el-button>
+            <el-button type="primary" icon="el-icon-edit">新增</el-button>
+          </el-form-item>
+        </el-form>
       </el-row>
       <el-table :data='roleData' border style='width: 100%'>
         <el-table-column prop='id' label='编号'></el-table-column>
@@ -54,8 +55,6 @@
           <el-input v-model="update.note"></el-input>
         </el-form-item>
         <el-form-item label="角色状态" prop="status">
-          <!-- <el-input v-model.number="update.status"></el-input> -->
-          <!-- <el-switch v-model.number="update.status" active-text="启动" inactive-text="禁用"></el-switch> -->
           <el-switch v-model="update.status" active-value=1 inactive-value=0 active-text="启动" inactive-text="禁用"></el-switch>
         </el-form-item>
       </el-form>
@@ -145,6 +144,6 @@ export default {
 
 <style>
 .my-row.el-row {
-  padding: 1.2rem 0rem;
+  padding: 1.2rem 0rem 0rem 0rem;
 }
 </style>

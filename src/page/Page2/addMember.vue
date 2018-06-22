@@ -36,7 +36,6 @@
   </div>
 </template>
 
-
 <script>
 export default {
   name: 'AddMember',
@@ -74,4 +73,3 @@ export default {
   margin: 0 auto;
 }
 </style>
-

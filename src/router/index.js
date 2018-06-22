@@ -12,6 +12,7 @@ import Operate from '@/page/Page2/operate'
 import Database from '@/page/Page2/database'
 import Auth from '@/page/Page2/auth'
 import AddMember from '@/page/Page2/addMember'
+import Main from '@/page/Main'
 Vue.use(Router)
 
 export default new Router({
@@ -20,8 +21,14 @@ export default new Router({
       path: '/',
       name: 'Index',
       component: Index,
-      redirect: '/page1', // 重定向到page1
+      redirect: '/main',
+      // redirect: '/page1', // 重定向到page1
       children: [
+        {
+          path: '/main',
+          name: 'Main',
+          component: Main
+        },
         {
           path: '/page1',
           name: 'Page1',
@@ -38,6 +45,7 @@ export default new Router({
           path: '/page2',
           name: 'Page2',
           component: Page2,
+          redirect: '/page2/role',
           children: [
             {
               path: '/page2/role',
@@ -68,7 +76,7 @@ export default new Router({
               path: '/page2/auth',
               name: 'Auth',
               component: Auth
-            }, 
+            },
             {
               path: '/page2/addMember',
               name: 'AddMember',

@@ -32,8 +32,6 @@ export default {
   },
   components: {
     Header,
-    // Aside,
-    // Main,
     Menu,
     Footer
   }
