@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/util/store'
+// import store from '@/util/store'
 import Login from '@/page/Login'
 import Index from '@/page/Index'
 import DataMenu from '@/page/DataMenu'
@@ -85,21 +85,21 @@ const router = new VueRouter({
   mode: 'history' // 干掉地址栏里边的#号键
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requireAuth) {
-    if (store.state.token) {
-      next()
-    } else {
-      next({
-        path: '/Login',
-        name: 'Login',
-        component: Login,
-        query: {redirect: to.fullPath}
-      })
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requireAuth) {
+//     if (store.state.token) {
+//       next()
+//     } else {
+//       next({
+//         path: '/Login',
+//         name: 'Login',
+//         component: Login,
+//         query: {redirect: to.fullPath}
+//       })
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router
