@@ -1,8 +1,8 @@
 <template>
   <el-row>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-menu-item v-for='(item,index) in menu' :key='index' :index='(index + 1).toString()'>
-        <router-link :to="item.path">{{ item.name }}</router-link>
+    <el-menu router :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu-item v-for='(item,index) in menu' :key='index' :index='item.path'>
+        {{ item.name }}
       </el-menu-item>
     </el-menu>
   </el-row>
@@ -24,13 +24,14 @@ export default {
     this.getPermit()
   },
   methods: {
-    // handleSelect (key, keyPath) {
-    //   console.log(key, keyPath)
-    // },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    },
     getMenu () {
       var qs = require('qs')
       this.$axios.post('/getMenuLevel1', qs.stringify({username: store.state.username})).then(res => {
-        this.menu = JSON.parse(res.data)
+        // this.menu = JSON.parse(res.data)
+        this.menu = res.data
       }).catch(res => {
         console.log(res)
       })

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '@/util/store'
+import store from '@/util/store'
 import Login from '@/page/Login'
 import Index from '@/page/Index'
 import DataMenu from '@/page/DataMenu'
@@ -34,7 +34,8 @@ const router = new VueRouter({
         {
           path: 'main',
           name: 'Main',
-          component: Main
+          component: Main,
+          meta: {requireAuth: true}
         },
         {
           path: '/dataMenu',
@@ -93,41 +94,49 @@ const router = new VueRouter({
           name: 'AuthMenu',
           component: AuthMenu,
           redirect: '/authMenu/role',
+          meta: {requireAuth: true},
           children: [
             {
               path: '/authMenu/role',
               name: 'Role',
-              component: Role
+              component: Role,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/branch',
               name: 'Branch',
-              component: Branch
+              component: Branch,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/member',
               name: 'Member',
-              component: Member
+              component: Member,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/operate',
               name: 'Operate',
-              component: Operate
+              component: Operate,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/database',
               name: 'Database',
-              component: Database
+              component: Database,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/auth',
               name: 'Auth',
-              component: Auth
+              component: Auth,
+              meta: {requireAuth: true}
             },
             {
               path: '/authMenu/addMember',
               name: 'AddMember',
-              component: AddMember
+              component: AddMember,
+              meta: {requireAuth: true}
             }
           ]
         }
@@ -143,21 +152,21 @@ const router = new VueRouter({
   mode: 'history' // 去除地址栏里边的#号键
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requireAuth) {
-//     if (store.state.token) {
-//       next()
-//     } else {
-//       next({
-//         path: '/Login',
-//         name: 'Login',
-//         component: Login,
-//         query: {redirect: to.fullPath}
-//       })
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (store.state.token) {
+      next()
+    } else {
+      next({
+        path: '/Login',
+        name: 'Login',
+        component: Login,
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

@@ -5,24 +5,55 @@ const Rondom = Mock.Random
 
 // Mock数据
 var res = Mock.mock({
+  // 登陆信息
+  'loginInfo': [{
+    'token': '@guid'
+  }],
+  // 一级菜单信息
+  'menuLevelInfo1': [
+    {
+      'path': '/main',
+      'name': '系统首页'
+    },
+    {
+      'path': '/dataMenu',
+      'name': '数据管理'
+    },
+    {
+      'path': '/sysMenu',
+      'name': '系统管理'
+    },
+    {
+      'path': '/taskMenu',
+      'name': '任务管理'
+    },
+    {
+      'path': '/authMenu',
+      'name': '权限管理'
+    }
+  ],
+  // 用户信息
   'userInfo|20': [{
     'id|+1': 1,
     'username': () => Rondom.name(),
     'email': () => Rondom.email(),
     'age|1-100': 18
   }],
+  // 数据库备份文件信息
   'fileInfo|10': [{
     'filename': '@word',
     'version|1-10.1': 1,
     'size|1-50': 100,
     'time': '@datetime'
   }],
+  // 操作记录信息
   'operateInfo|7': [{
     'id': '@id',
     'name': '@first',
     'time': '@datetime',
     'record': '@csentence'
   }],
+  // 成员信息
   'memberInfo|7': [{
     'account': '@first',
     'name': '@cname',
@@ -34,44 +65,71 @@ var res = Mock.mock({
   }]
 })
 
-var data = res.userInfo
+var userData = res.userInfo
 var fileData = res.fileInfo
 var operateData = res.operateInfo
 var memberData = res.memberInfo
+var loginData = res.loginInfo
+var menuLevel1 = res.menuLevelInfo1
+
+/**
+ * 登录
+ */
+Mock.mock(/login/, options => {
+  var username = options.body.slice(9, 10)
+  var password = options.body.slice(20)
+  if (username === 'a' && password === '123456') {
+    return loginData
+  } else {
+    console.log('err-----')
+  }
+})
+
+/**
+ * 一级菜单
+ */
+Mock.mock(/getMenuLevel1/, options => {
+  var username = options.body.slice(9)
+  if (username !== '') {
+    return menuLevel1
+  } else {
+    console.log(`can't get leve1 menu`)
+  }
+})
 
 /**
  * page1 table 数据
  */
 // 返回用户数据
 Mock.mock(/getUser/, function () {
-  return data
+  return userData
 })
 
 // 删除单行数据
 Mock.mock(/deleteUser/, function (options) {
   var id = parseInt(options.body.split(':')[1]) // 提取id值
   var index
-  for (let i in data) {
-    if (data[i].id === id) {
+  for (let i in userData) {
+    if (userData[i].id === id) {
       index = i
       break
     }
   }
-  data.splice(index, 1)
-  return data
+  userData.splice(index, 1)
+  return userData
 })
 
 // 删除多行数据
 Mock.mock(/removeUsers/, function (options) {
   var ids = options.body.split(':')[1].split('}')[0].slice(1, -1).split(',') // 提取id数组
   for (let i in ids) {
-    for (let j in data) {
-      if (data[j].id === parseInt(ids[i])) {
-        data.splice(j, 1)
+    for (let j in userData) {
+      if (userData[j].id === parseInt(ids[i])) {
+        userData.splice(j, 1)
       }
     }
   }
-  return data
+  return userData
 })
 
 // 修改数据
@@ -81,14 +139,14 @@ Mock.mock(/updateUser/, options => {
   var username = infos[0].slice(12, -1)
   var email = infos[1].slice(9, -1)
   var age = parseInt(infos[2].slice(6))
-  for (let i in data) {
-    if (data[i].id === id) {
-      data[i].username = username
-      data[i].email = email
-      data[i].age = age
+  for (let i in userData) {
+    if (userData[i].id === id) {
+      userData[i].username = username
+      userData[i].email = email
+      userData[i].age = age
     }
   }
-  return data
+  return userData
 })
 
 // 创建用户
@@ -97,10 +155,10 @@ Mock.mock(/createUser/, options => {
   var username = infos[0].slice(12, -1)
   var email = infos[1].slice(9, -1)
   var age = parseInt(infos[2].slice(6))
-  var id = data[data.length - 1].id + 1
+  var id = userData[userData.length - 1].id + 1
   var newUser = {'id': id, 'age': age, 'username': username, 'email': email}
-  data.push(newUser)
-  return data
+  userData.push(newUser)
+  return userData
 })
 
 /**
