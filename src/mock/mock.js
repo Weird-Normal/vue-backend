@@ -10,11 +10,38 @@ var res = Mock.mock({
     'username': () => Rondom.name(),
     'email': () => Rondom.email(),
     'age|1-100': 18
+  }],
+  'fileInfo|10': [{
+    'filename': '@word',
+    'version|1-10.1': 1,
+    'size|1-50': 100,
+    'time': '@datetime'
+  }],
+  'operateInfo|7': [{
+    'id': '@id',
+    'name': '@first',
+    'time': '@datetime',
+    'record': '@csentence'
+  }],
+  'memberInfo|7': [{
+    'account': '@first',
+    'name': '@cname',
+    'email': '@email',
+    'branch': '@cword',
+    'addTime': '@datetime',
+    'lastTime': '@datetime',
+    'status|1-2': true
   }]
 })
 
 var data = res.userInfo
+var fileData = res.fileInfo
+var operateData = res.operateInfo
+var memberData = res.memberInfo
 
+/**
+ * page1 table 数据
+ */
 // 返回用户数据
 Mock.mock(/getUser/, function () {
   return data
@@ -74,4 +101,19 @@ Mock.mock(/createUser/, options => {
   var newUser = {'id': id, 'age': age, 'username': username, 'email': email}
   data.push(newUser)
   return data
+})
+
+/**
+ * Page2 数据
+ */
+Mock.mock(/getDatabase/, () => {
+  return fileData
+})
+
+Mock.mock(/getOperate/, () => {
+  return operateData
+})
+
+Mock.mock(/getMember/, () => {
+  return memberData
 })
