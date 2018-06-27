@@ -24,10 +24,6 @@ var res = Mock.mock({
       'name': '系统管理'
     },
     {
-      'path': '/taskMenu',
-      'name': '任务管理'
-    },
-    {
       'path': '/authMenu',
       'name': '权限管理'
     }
@@ -65,6 +61,54 @@ var res = Mock.mock({
   }]
 })
 
+// 二级菜单数据
+var childMenu = Mock.mock({
+  'dataMenu': [
+    {
+      'nav': '导航一',
+      'group': [
+        {
+          'name': '分类一',
+          'menu': [
+            {
+              'path': '/dataMenu/p1',
+              'name': 'p1'
+            },
+            {
+              'path': '/dataMenu/p2',
+              'name': 'p2'
+            },
+            {
+              'path': '/dataMenu/p3',
+              'name': 'p3'
+            },
+            {
+              'path': '/dataMenu/p4',
+              'name': 'p4'
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  'sysMenu': [
+    {
+      'nav': '导航一',
+      'group': [
+        {
+          'name': '分类一',
+          'menu': [
+            {
+              'path': '/sysMenu/s1',
+              'name': 's1'
+            }
+          ]
+        }
+      ]
+    }
+  ]
+})
+
 var userData = res.userInfo
 var fileData = res.fileInfo
 var operateData = res.operateInfo
@@ -76,8 +120,9 @@ var menuLevel1 = res.menuLevelInfo1
  * 登录
  */
 Mock.mock(/login/, options => {
-  var username = options.body.slice(9, 10)
-  var password = options.body.slice(20)
+  let temp = options.body.split('&')
+  let username = temp[0].split('=')[1]
+  let password = temp[1].split('=')[1]
   if (username === 'a' && password === '123456') {
     return loginData
   } else {
@@ -89,11 +134,31 @@ Mock.mock(/login/, options => {
  * 一级菜单
  */
 Mock.mock(/getMenuLevel1/, options => {
-  var username = options.body.slice(9)
+  let username = options.body.slice(9)
   if (username !== '') {
     return menuLevel1
   } else {
     console.log(`can't get leve1 menu`)
+  }
+})
+
+/**
+ * 二级菜单
+ */
+Mock.mock(/getChildMenu/, options => {
+  let temp = options.body.split('&')
+  // let username = temp[0].split('=')[1]
+  let path = unescape(temp[1].split('=')[1])
+  switch (path) {
+    case '/dataMenu/':
+      return childMenu.dataMenu
+    case '/sysMenu/':
+      return childMenu.sysMenu
+    case '/authMenu/':
+      console.log(path)
+      break
+    default:
+      console.log('xxxxx')
   }
 })
 

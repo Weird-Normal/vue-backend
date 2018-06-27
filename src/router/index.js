@@ -5,7 +5,6 @@ import Login from '@/page/Login'
 import Index from '@/page/Index'
 import DataMenu from '@/page/DataMenu'
 import SysMenu from '@/page/SysMenu'
-import TaskMenu from '@/page/TaskMenu'
 import AuthMenu from '@/page/AuthMenu'
 import P1 from '@/page/DataMenu/p1'
 import P2 from '@/page/DataMenu/p2'
@@ -82,12 +81,6 @@ const router = new VueRouter({
               meta: {requireAuth: true}
             }
           ]
-        },
-        {
-          path: '/taskMenu',
-          name: 'TaskMenu',
-          component: TaskMenu,
-          meta: {requireAuth: true}
         },
         {
           path: '/authMenu',

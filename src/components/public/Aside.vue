@@ -36,8 +36,8 @@ export default {
       var path = this.$route.path + '/'
       this.$axios.post('/getChildMenu', qs.stringify({username: store.state.username, path: path}))
         .then(res => {
-          this.childMenu = JSON.parse(res.data)
-          // console.log(res.data)
+          // this.childMenu = JSON.parse(res.data)
+          this.childMenu = res.data
         }).catch(res => {
           console.log(res)
         })
