@@ -5,19 +5,18 @@ import Login from '@/page/Login'
 import Index from '@/page/Index'
 import DataMenu from '@/page/DataMenu'
 import SysMenu from '@/page/SysMenu'
-import AuthMenu from '@/page/AuthMenu'
 import P1 from '@/page/DataMenu/p1'
 import P2 from '@/page/DataMenu/p2'
 import P3 from '@/page/DataMenu/p3'
 import P4 from '@/page/DataMenu/p4'
 import S1 from '@/page/SysMenu/s1'
-import Role from '@/page/AuthMenu/role'
-import Branch from '@/page/AuthMenu/branch'
-import Member from '@/page/AuthMenu/member'
-import Operate from '@/page/AuthMenu/operate'
-import Database from '@/page/AuthMenu/database'
-import Auth from '@/page/AuthMenu/auth'
-import AddMember from '@/page/AuthMenu/addMember'
+import Role from '@/page/SysMenu/AuthMenu/role'
+import Branch from '@/page/SysMenu/AuthMenu/branch'
+import Member from '@/page/SysMenu/AuthMenu/member'
+import Operate from '@/page/SysMenu/AuthMenu/operate'
+import Database from '@/page/SysMenu/AuthMenu/database'
+import Auth from '@/page/SysMenu/AuthMenu/auth'
+import AddMember from '@/page/SysMenu/AuthMenu/addMember'
 import Main from '@/page/Main'
 Vue.use(VueRouter)
 
@@ -79,54 +78,45 @@ const router = new VueRouter({
               name: 'S1',
               component: S1,
               meta: {requireAuth: true}
-            }
-          ]
-        },
-        {
-          path: '/authMenu',
-          name: 'AuthMenu',
-          component: AuthMenu,
-          redirect: '/authMenu/role',
-          meta: {requireAuth: true},
-          children: [
+            },
             {
-              path: '/authMenu/role',
+              path: '/sysMenu/authMenu/role',
               name: 'Role',
               component: Role,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/branch',
+              path: '/sysMenu/authMenu/branch',
               name: 'Branch',
               component: Branch,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/member',
+              path: '/sysMenu/authMenu/member',
               name: 'Member',
               component: Member,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/operate',
+              path: '/sysMenu/authMenu/operate',
               name: 'Operate',
               component: Operate,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/database',
+              path: '/sysMenu/authMenu/database',
               name: 'Database',
               component: Database,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/auth',
+              path: '/sysMenu/authMenu/auth',
               name: 'Auth',
               component: Auth,
               meta: {requireAuth: true}
             },
             {
-              path: '/authMenu/addMember',
+              path: '/sysMenu/authMenu/addMember',
               name: 'AddMember',
               component: AddMember,
               meta: {requireAuth: true}

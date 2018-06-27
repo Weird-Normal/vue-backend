@@ -171,7 +171,7 @@ export default {
     },
     // 设置权限
     setAuth (user) {
-      this.$router.push('/authMenu/auth')
+      this.$router.push('/sysMenu/authMenu/auth')
     }
   }
 }

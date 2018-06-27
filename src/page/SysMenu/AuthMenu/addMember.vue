@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     forward () {
-      this.$router.push('/authMenu/member')
+      this.$router.push('/sysMenu/authMenu/member')
     }
   }
 }

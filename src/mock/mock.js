@@ -22,10 +22,6 @@ var res = Mock.mock({
     {
       'path': '/sysMenu',
       'name': '系统管理'
-    },
-    {
-      'path': '/authMenu',
-      'name': '权限管理'
     }
   ],
   // 用户信息
@@ -100,7 +96,37 @@ var childMenu = Mock.mock({
           'menu': [
             {
               'path': '/sysMenu/s1',
-              'name': 's1'
+              'name': '测试一'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'nav': '权限管理',
+      'group': [
+        {
+          'name': '',
+          'menu': [
+            {
+              'path': '/sysMenu/authMenu/role',
+              'name': '角色管理'
+            },
+            {
+              'path': '/sysMenu/authMenu/branch',
+              'name': '部门管理'
+            },
+            {
+              'path': '/sysMenu/authMenu/member',
+              'name': '成员管理'
+            },
+            {
+              'path': '/sysMenu/authMenu/operate',
+              'name': '操作日志'
+            },
+            {
+              'path': '/sysMenu/authMenu/database',
+              'name': '数据库管理'
             }
           ]
         }

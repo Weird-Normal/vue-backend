@@ -126,7 +126,7 @@ export default {
       this.dialogUpdateVisible = true
     },
     add () {
-      this.$router.push('/authMenu/addMember')
+      this.$router.push('/sysMenu/authMenu/addMember')
     }
   }
 }

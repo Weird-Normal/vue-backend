@@ -109,7 +109,7 @@ export default {
       }
     },
     forward () {
-      this.$router.push('/authMenu/branch')
+      this.$router.push('/sysMenu/authMenu/branch')
     }
   }
 }
