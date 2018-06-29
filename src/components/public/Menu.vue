@@ -40,7 +40,8 @@ export default {
       var qs = require('qs')
       this.$axios.post('/getPermit', qs.stringify({username: store.state.username}))
         .then(res => {
-          this.$store.commit('setPermit', JSON.parse(res.data))
+          // this.$store.commit('setPermit', JSON.parse(res.data))
+          this.$store.commit('setPermit', res.data)
         }).catch(res => {
           console.log(res)
         })

@@ -27,7 +27,7 @@
         <el-table-column prop='record' label='操作记录'></el-table-column>
       </el-table>
 
-      <Pagination :page="page" :data="operateData"></Pagination>
+      <Pagination :page="page" :data="operateData" v-on:refresh="getOperateData"></Pagination>
   </div>
 </template>
 
@@ -44,8 +44,9 @@ export default {
       },
       operateData: [],
       page: {
-        psize: 10,
-        cpage: 1
+        size: 10,
+        cpage: 1,
+        total: 0
       },
       searchRolename: '',
       value: '',
@@ -75,8 +76,12 @@ export default {
   },
   methods: {
     getOperateData () {
-      this.$axios.get('/getOperate').then(res => {
-        this.operateData = res.data
+      var qs = require('qs')
+      let limit = this.page.size
+      let offset = (this.page.cpage - 1) * limit
+      this.$axios.post('/getOperate', qs.stringify({start: offset, rows: limit})).then(res => {
+        this.operateData = res.data.data
+        this.page.total = res.data.total
       }, err => {
         console.log(err)
       })

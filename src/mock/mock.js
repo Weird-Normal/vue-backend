@@ -10,7 +10,7 @@ var res = Mock.mock({
     'token': '@guid'
   }],
   // 一级菜单信息
-  'menuLevelInfo1': [
+  'menuLevelInfo1A': [
     {
       'path': '/main',
       'name': '系统首页'
@@ -24,29 +24,52 @@ var res = Mock.mock({
       'name': '系统管理'
     }
   ],
+  'menuLevelInfo1B': [
+    {
+      'path': '/main',
+      'name': '系统首页'
+    },
+    {
+      'path': '/dataMenu',
+      'name': '数据管理'
+    }
+  ],
+  // 按钮权限
+  'permitInfoA': [
+    {
+      'path': '/dataMenu/p1',
+      'permission': 'add,update,delete'
+    }
+  ],
+  'permitInfoB': [
+    {
+      'path': '/dataMenu/p1',
+      'permission': 'add,update'
+    }
+  ],
   // 用户信息
-  'userInfo|20': [{
+  'userInfo|77': [{
     'id|+1': 1,
     'username': () => Rondom.name(),
     'email': () => Rondom.email(),
     'age|1-100': 18
   }],
   // 数据库备份文件信息
-  'fileInfo|10': [{
+  'fileInfo|22': [{
     'filename': '@word',
     'version|1-10.1': 1,
     'size|1-50': 100,
     'time': '@datetime'
   }],
   // 操作记录信息
-  'operateInfo|7': [{
+  'operateInfo|50': [{
     'id': '@id',
     'name': '@first',
     'time': '@datetime',
     'record': '@csentence'
   }],
   // 成员信息
-  'memberInfo|7': [{
+  'memberInfo|50': [{
     'account': '@first',
     'name': '@cname',
     'email': '@email',
@@ -73,14 +96,6 @@ var childMenu = Mock.mock({
             {
               'path': '/dataMenu/p2',
               'name': 'p2'
-            },
-            {
-              'path': '/dataMenu/p3',
-              'name': 'p3'
-            },
-            {
-              'path': '/dataMenu/p4',
-              'name': 'p4'
             }
           ]
         }
@@ -140,7 +155,10 @@ var fileData = res.fileInfo
 var operateData = res.operateInfo
 var memberData = res.memberInfo
 var loginData = res.loginInfo
-var menuLevel1 = res.menuLevelInfo1
+var menuLevel1A = res.menuLevelInfo1A
+var menuLevel1B = res.menuLevelInfo1B
+var permitA = res.permitInfoA
+var permitB = res.permitInfoB
 
 /**
  * 登录
@@ -151,8 +169,22 @@ Mock.mock(/login/, options => {
   let password = temp[1].split('=')[1]
   if (username === 'a' && password === '123456') {
     return loginData
+  } else if (username === 'b' && password === '123456') {
+    return loginData
   } else {
     console.log('err-----')
+  }
+})
+
+/**
+ * 按钮权限
+ */
+Mock.mock(/getPermit/, options => {
+  let username = options.body.split('=')[1]
+  if (username === 'a') {
+    return permitA
+  } else if (username === 'b') {
+    return permitB
   }
 })
 
@@ -161,8 +193,10 @@ Mock.mock(/login/, options => {
  */
 Mock.mock(/getMenuLevel1/, options => {
   let username = options.body.slice(9)
-  if (username !== '') {
-    return menuLevel1
+  if (username === 'a') {
+    return menuLevel1A
+  } else if (username === 'b') {
+    return menuLevel1B
   } else {
     console.log(`can't get leve1 menu`)
   }
@@ -192,8 +226,18 @@ Mock.mock(/getChildMenu/, options => {
  * page1 table 数据
  */
 // 返回用户数据
-Mock.mock(/getUser/, function () {
-  return userData
+Mock.mock(/getUser/, options => {
+  let temp = options.body.split('&')
+  let start = parseInt(temp[0].split('=')[1])
+  let rows = parseInt(temp[1].split('=')[1])
+  let end = start + rows
+  console.log('start:' + start + ' rows:' + rows + ' end:' + end)
+  let pageData = {
+    'total': userData.length,
+    'data': userData.slice(start, end)
+  }
+  return pageData
+  // return userData
 })
 
 // 删除单行数据
@@ -255,14 +299,38 @@ Mock.mock(/createUser/, options => {
 /**
  * Page2 数据
  */
-Mock.mock(/getDatabase/, () => {
-  return fileData
+Mock.mock(/getDatabase/, options => {
+  let temp = options.body.split('&')
+  let start = parseInt(temp[0].split('=')[1])
+  let rows = parseInt(temp[1].split('=')[1])
+  let end = start + rows
+  let pageData = {
+    'total': fileData.length,
+    'data': fileData.slice(start, end)
+  }
+  return pageData
 })
 
-Mock.mock(/getOperate/, () => {
-  return operateData
+Mock.mock(/getOperate/, options => {
+  let temp = options.body.split('&')
+  let start = parseInt(temp[0].split('=')[1])
+  let rows = parseInt(temp[1].split('=')[1])
+  let end = start + rows
+  let pageData = {
+    'total': operateData.length,
+    'data': operateData.slice(start, end)
+  }
+  return pageData
 })
 
-Mock.mock(/getMember/, () => {
-  return memberData
+Mock.mock(/getMember/, options => {
+  let temp = options.body.split('&')
+  let start = parseInt(temp[0].split('=')[1])
+  let rows = parseInt(temp[1].split('=')[1])
+  let end = start + rows
+  let pageData = {
+    'total': memberData.length,
+    'data': memberData.slice(start, end)
+  }
+  return pageData
 })

@@ -50,17 +50,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="page.cpage"
-          :page-sizes="[10, 20, 50, 70]"
-          :page-size="page.psize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="userData.length">
-        </el-pagination>
-      </div>
+      <Pagination :page="page" :data="userData" v-on:refresh="getUsersData"></Pagination>
     </el-row>
 
     <!-- 创建用户 modal -->
@@ -106,6 +96,7 @@
 
 <script>
 // import api from '@/api/api.js'
+import Pagination from '@/components/pagination/pagination'
 
 var placeholders = {
   'username': '请输入查找用户名',
@@ -201,6 +192,9 @@ export default {
       placeholder: placeholders['username']
     }
   },
+  components: {
+    Pagination
+  },
   mounted: function () {
     this.getUsersData()
   },
@@ -221,18 +215,6 @@ export default {
       }
       this.getUsersData()
     },
-    // 每页显示的条数
-    handleSizeChange (val) {
-      console.log(`每页${val}条`)
-      this.page.psize = val
-      this.getUsersData()
-    },
-    // 当前页选择
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-      this.page.cpage = val
-      this.getUsersData()
-    },
     // 搜索字段的变更
     searchFieldChange (val) {
       this.placeholder = placeholders[val]
@@ -249,11 +231,14 @@ export default {
     },
     getUsersData: function () {
       this.loading = true
-      this.$axios.get('/getUser').then(res => {
-        this.userData = res.data
+      var qs = require('qs')
+      let limit = this.page.psize
+      let offset = (this.page.cpage - 1) * limit
+      // let name = this.searchFile.name
+      this.$axios.post('/getUser', qs.stringify({start: offset, rows: limit})).then(res => {
+        this.userData = res.data.data
         this.page.total = res.data.total
         this.loading = false
-        // console.log(res)
       }, err => {
         console.log(err)
       })

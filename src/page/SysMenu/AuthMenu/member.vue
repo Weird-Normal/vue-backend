@@ -44,7 +44,7 @@
         </el-table-column>
       </el-table>
 
-      <Pagination :page="page" :data="memberData"></Pagination>
+      <Pagination :page="page" :data="memberData" v-on:refresh="getMemberData"></Pagination>
     </div>
 
     <!-- 修改用户 modal -->
@@ -78,8 +78,9 @@ export default {
     return {
       memberData: [],
       page: {
-        psize: 10,
-        cpage: 1
+        size: 10,
+        cpage: 1,
+        total: 0
       },
       searchRolename: '',
       value: '',
@@ -109,8 +110,12 @@ export default {
   },
   methods: {
     getMemberData () {
-      this.$axios.get('/getMember').then(res => {
-        this.memberData = res.data
+      let qs = require('qs')
+      let limit = this.page.size
+      let offset = (this.page.cpage - 1) * limit
+      this.$axios.post('/getMember', qs.stringify({start: offset, rows: limit})).then(res => {
+        this.memberData = res.data.data
+        this.page.total = res.data.total
       }, err => {
         console.log(err)
       })

@@ -42,7 +42,7 @@
         </el-table-column>
       </el-table>
 
-      <Pagination :page="page" :data="fileData"></Pagination>
+      <Pagination :page="page" :data="fileData" v-on:refresh="getFileData"></Pagination>
     </div>
   </div>
 </template>
@@ -57,8 +57,9 @@ export default {
     return {
       fileData: [],
       page: {
-        psize: 10,
-        cpage: 1
+        size: 10,
+        cpage: 1,
+        total: 0
       },
       pickerOptions: {
         shortcuts: [{
@@ -114,8 +115,12 @@ export default {
   },
   methods: {
     getFileData () {
-      this.$axios.get('/getDatabase').then(res => {
-        this.fileData = res.data
+      var qs = require('qs')
+      let limit = this.page.size
+      let offset = (this.page.cpage - 1) * limit
+      this.$axios.post('/getDatabase', qs.stringify({start: offset, rows: limit})).then(res => {
+        this.fileData = res.data.data
+        this.page.total = res.data.total
       }, err => {
         console.log(err)
       })

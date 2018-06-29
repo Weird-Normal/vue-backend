@@ -135,6 +135,7 @@ export default {
   methods: {
     getPermit () {
       var path = this.$route.path
+      console.log('path: ' + path)
       var permit = store.state.permit
       var thisPermit = []
       for (let i = 0; i < permit.length; i++) {
@@ -262,13 +263,6 @@ export default {
           var json = {id: _id}
           ids.push(json)
         }
-        // console.log(ids)
-        // this.$axios.defaults.headers.post['Content-Type'] = 'application/json'
-        // var qs = require('qs')
-        // console.log(qs.stringify(ids))
-        // console.log(JSON.stringify(ids))
-        // console.log(qs.stringify({id: JSON.stringify(ids)}))
-        // console.log(JSON.stringify({id: ids}))
         this.$axios.post('/del', JSON.stringify({id: ids}), {headers: {'Content-Type': 'application/json'}}).then(response => {
           this.$message({
             type: 'success',

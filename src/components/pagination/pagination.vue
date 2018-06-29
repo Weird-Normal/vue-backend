@@ -7,7 +7,7 @@
       :page-sizes="[10, 20, 50, 70]"
       :page-size="page.psize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="data.length">
+      :total="page.total">
     </el-pagination>
   </div>
 </template>
@@ -21,13 +21,15 @@ export default {
     handleSizeChange (val) {
       console.log(`每页${val}条`)
       this.page.psize = val
-      this.getUsersData()
+      // this.getUsersData()
+      this.$emit('refresh')
     },
     // 当前页选择
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
       this.page.cpage = val
-      this.getUsersData()
+      // this.getUsersData()
+      this.$emit('refresh')
     }
   }
 }
