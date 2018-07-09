@@ -8,7 +8,7 @@
         </template>
         <el-menu-item-group v-for="(item2, index2) in item.group" :key="index2">
           <template slot="title">{{ item2.name }}</template>
-          <el-menu-item v-for="(item3, index3) in item2.menu" :key="index3" :index="item3.path">
+          <el-menu-item v-for="(item3, index3) in item2.menu" :key="index3" :index="item3.path" :route="{name: item3.name, params: {num :123}}">
             {{ item3.name }}
           </el-menu-item>
         </el-menu-item-group>

@@ -96,6 +96,10 @@ var childMenu = Mock.mock({
             {
               'path': '/dataMenu/p2',
               'name': 'p2'
+            },
+            {
+              'path': '/dataMenu/p3/',
+              'name': 'p3'
             }
           ]
         }

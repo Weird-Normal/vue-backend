@@ -184,29 +184,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.todo-div {
-  padding: 0 1rem;
-  margin: 1rem 2rem;
-  border-bottom: 1px solid #80808040
-}
-
-.el-card__header {
-  background: gainsboro;
-}
-
-.main-item {
-  margin: 2rem 3.5rem 1rem 4rem;
-}
-
-.main-count {
-  float: right;
-  color: red;
-}
-
-.main-about {
-  text-align: center;
-  padding-bottom: 1rem;
-}
-</style>

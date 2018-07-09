@@ -7,6 +7,7 @@ import DataMenu from '@/page/DataMenu'
 import SysMenu from '@/page/SysMenu'
 import P1 from '@/page/DataMenu/p1'
 import P2 from '@/page/DataMenu/p2'
+import P3 from '@/page/DataMenu/p3'
 import S1 from '@/page/SysMenu/s1'
 import Role from '@/page/SysMenu/AuthMenu/role'
 import Branch from '@/page/SysMenu/AuthMenu/branch'
@@ -22,32 +23,38 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'Index',
+      name: 'index',
       component: Index,
       redirect: '/main',
       // redirect: '/dataMenu', // 重定向到page1
       children: [
         {
           path: 'main',
-          name: 'Main',
+          name: 'main',
           component: Main,
           meta: {requireAuth: true}
         },
         {
           path: '/dataMenu',
-          name: 'DataMenu',
+          name: 'dataMenu',
           component: DataMenu,
           children: [
             {
               path: '/dataMenu/p1',
-              name: 'P1',
+              name: 'p1',
               component: P1,
               meta: {requireAuth: true}
             },
             {
               path: '/dataMenu/p2',
-              name: 'P2',
+              name: 'p2',
               component: P2,
+              meta: {requireAuth: true}
+            },
+            {
+              path: '/dataMenu/p3/',
+              name: 'p3',
+              component: P3,
               meta: {requireAuth: true}
             }
           ],
@@ -55,55 +62,55 @@ const router = new VueRouter({
         },
         {
           path: '/sysMenu',
-          name: 'SysMenu',
+          name: 'sysMenu',
           component: SysMenu,
           meta: {requireAuth: true},
           children: [
             {
               path: '/sysMenu/s1',
-              name: 'S1',
+              name: 's1',
               component: S1,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/role',
-              name: 'Role',
+              name: 'role',
               component: Role,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/branch',
-              name: 'Branch',
+              name: 'branch',
               component: Branch,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/member',
-              name: 'Member',
+              name: 'menber',
               component: Member,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/operate',
-              name: 'Operate',
+              name: 'operate',
               component: Operate,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/database',
-              name: 'Database',
+              name: 'database',
               component: Database,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/auth',
-              name: 'Auth',
+              name: 'auth',
               component: Auth,
               meta: {requireAuth: true}
             },
             {
               path: '/sysMenu/authMenu/addMember',
-              name: 'AddMember',
+              name: 'addMember',
               component: AddMember,
               meta: {requireAuth: true}
             }

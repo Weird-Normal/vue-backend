@@ -68,12 +68,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.loginPage {
-    width: 350px;
-    margin: auto;
-    position: relative;
-    margin-top: 15%;
-}
-</style>

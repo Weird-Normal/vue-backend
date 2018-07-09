@@ -342,11 +342,3 @@ export default {
   }
 }
 </script>
-
-<style>
-ul li{list-style: none}
-.tc{text-align:center; }
-.mg{ margin-top:10px;}
-.fl{float:left}
-.fr{float:right}
-</style>

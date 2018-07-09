@@ -74,7 +74,7 @@ body > .el-container {
   line-height: 320px;
 }
 
-#my-app {
+/* #my-app {
   min-height: 100%;
   height: auto !important;
   height: 100;
@@ -83,5 +83,5 @@ body > .el-container {
 
 #my-page {
   padding-bottom: 60px
-}
+} */
 </style>

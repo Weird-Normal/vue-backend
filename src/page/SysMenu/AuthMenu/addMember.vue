@@ -60,16 +60,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.add-form {
-  border: 1px solid gainsboro;
-  margin-top: 1rem;
-  padding: 2rem
-}
-
-.add-form>form {
-  width: 500px;
-  margin: 0 auto;
-}
-</style>

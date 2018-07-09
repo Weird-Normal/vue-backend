@@ -141,9 +141,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.my-row.el-row {
-  padding: 1.2rem 0rem 0rem 0rem;
-}
-</style>
